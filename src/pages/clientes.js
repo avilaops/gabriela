@@ -15,7 +15,7 @@ export class ClientesPage {
             <div class="container">
                 <div class="flex flex-between mb-md">
                     <h1>Gestão de Clientes</h1>
-                    <button class="btn btn-primary" onclick="window.clientesPage.showFormModal()">
+                    <button class="btn btn-primary" id="btn-novo-cliente">
                         + Novo Cliente
                     </button>
                 </div>
@@ -26,7 +26,6 @@ export class ClientesPage {
                         class="form-input" 
                         placeholder="Pesquisar por nome, telefone ou Instagram..."
                         id="search-input"
-                        oninput="window.clientesPage.handleSearch(this.value)"
                     >
                 </div>
 
@@ -37,6 +36,18 @@ export class ClientesPage {
 
     init() {
         window.clientesPage = this;
+        
+        // Event listeners
+        const btnNovo = document.getElementById('btn-novo-cliente');
+        if (btnNovo) {
+            btnNovo.addEventListener('click', () => this.showFormModal());
+        }
+        
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => this.handleSearch(e.target.value));
+        }
+        
         this.loadClientes();
     }
 

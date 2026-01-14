@@ -17,7 +17,7 @@ export class AgendaPage {
             <div class="container">
                 <div class="flex flex-between mb-md">
                     <h1>Agenda</h1>
-                    <button class="btn btn-primary" onclick="window.agendaPage.showFormModal()">
+                    <button class="btn btn-primary" id="btn-novo-agendamento">
                         + Novo Agendamento
                     </button>
                 </div>
@@ -25,22 +25,22 @@ export class AgendaPage {
                 <div class="card mb-md">
                     <div class="flex flex-between mb-md">
                         <div class="flex gap-sm">
-                            <button class="btn btn-sm ${this.viewMode === 'month' ? 'btn-primary' : 'btn-outline'}" onclick="window.agendaPage.changeView('month')">
+                            <button class="btn btn-sm ${this.viewMode === 'month' ? 'btn-primary' : 'btn-outline'}" id="btn-view-month">
                                 Mês
                             </button>
-                            <button class="btn btn-sm ${this.viewMode === 'day' ? 'btn-primary' : 'btn-outline'}" onclick="window.agendaPage.changeView('day')">
+                            <button class="btn btn-sm ${this.viewMode === 'day' ? 'btn-primary' : 'btn-outline'}" id="btn-view-day">
                                 Dia
                             </button>
                         </div>
                         
                         <div class="flex gap-sm">
-                            <button class="btn btn-sm btn-outline" onclick="window.agendaPage.previousPeriod()">
+                            <button class="btn btn-sm btn-outline" id="btn-previous">
                                 ← Anterior
                             </button>
-                            <button class="btn btn-sm btn-outline" onclick="window.agendaPage.today()">
+                            <button class="btn btn-sm btn-outline" id="btn-today">
                                 Hoje
                             </button>
-                            <button class="btn btn-sm btn-outline" onclick="window.agendaPage.nextPeriod()">
+                            <button class="btn btn-sm btn-outline" id="btn-next">
                                 Próximo →
                             </button>
                         </div>
@@ -56,6 +56,26 @@ export class AgendaPage {
 
     init() {
         window.agendaPage = this;
+        
+        // Event listeners
+        const btnNovo = document.getElementById('btn-novo-agendamento');
+        if (btnNovo) btnNovo.addEventListener('click', () => this.showFormModal());
+        
+        const btnMonth = document.getElementById('btn-view-month');
+        if (btnMonth) btnMonth.addEventListener('click', () => this.changeView('month'));
+        
+        const btnDay = document.getElementById('btn-view-day');
+        if (btnDay) btnDay.addEventListener('click', () => this.changeView('day'));
+        
+        const btnPrev = document.getElementById('btn-previous');
+        if (btnPrev) btnPrev.addEventListener('click', () => this.previousPeriod());
+        
+        const btnToday = document.getElementById('btn-today');
+        if (btnToday) btnToday.addEventListener('click', () => this.today());
+        
+        const btnNext = document.getElementById('btn-next');
+        if (btnNext) btnNext.addEventListener('click', () => this.nextPeriod());
+        
         this.renderView();
     }
 
