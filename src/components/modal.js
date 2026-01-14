@@ -10,11 +10,11 @@ export class Modal {
 
     render() {
         return `
-            <div id="${this.id}" class="modal-overlay" onclick="if(event.target === this) this.remove()">
+            <div id="${this.id}" class="modal-overlay">
                 <div class="modal modal-${this.size}">
                     <div class="modal-header">
                         <h3 class="modal-title">${this.title}</h3>
-                        <button class="modal-close" onclick="document.getElementById('${this.id}').remove()">✕</button>
+                        <button class="modal-close" data-modal-close>✕</button>
                     </div>
                     <div class="modal-body">
                         ${this.content}
@@ -30,7 +30,22 @@ export class Modal {
         
         document.body.insertAdjacentHTML('beforeend', this.render());
         
-        // Adicionar listener para fechar com ESC
+        const modalElement = document.getElementById(this.id);
+        
+        // Click no overlay para fechar
+        modalElement.addEventListener('click', (e) => {
+            if (e.target === modalElement) {
+                this.close();
+            }
+        });
+        
+        // Botão fechar
+        const closeBtn = modalElement.querySelector('[data-modal-close]');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => this.close());
+        }
+        
+        // ESC para fechar
         const escListener = (e) => {
             if (e.key === 'Escape') {
                 this.close();
@@ -38,26 +53,36 @@ export class Modal {
             }
         };
         document.addEventListener('keydown', escListener);
+        
+        // Animação
+        requestAnimationFrame(() => {
+            modalElement.classList.add('fade-in');
+        });
     }
 
     close() {
         const modal = document.getElementById(this.id);
         if (modal) {
-            modal.remove();
-            if (this.onClose) this.onClose();
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.remove();
+                if (this.onClose) this.onClose();
+            }, 200);
         }
     }
 
     static confirm(message, onConfirm) {
+        const modalId = 'modal-confirm-' + Date.now();
         const modal = new Modal({
+            id: modalId,
             title: 'Confirmação',
             content: `
-                <p>${message}</p>
+                <p style="margin-bottom: 24px;">${message}</p>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" onclick="document.getElementById('${modal.id}').remove()">
+                    <button class="btn btn-secondary" data-cancel>
                         Cancelar
                     </button>
-                    <button class="btn btn-primary" id="confirm-btn">
+                    <button class="btn btn-primary" data-confirm>
                         Confirmar
                     </button>
                 </div>
@@ -66,19 +91,34 @@ export class Modal {
         
         modal.show();
         
-        document.getElementById('confirm-btn').addEventListener('click', () => {
-            onConfirm();
-            modal.close();
-        });
+        setTimeout(() => {
+            const modalElement = document.getElementById(modalId);
+            
+            const cancelBtn = modalElement.querySelector('[data-cancel]');
+            const confirmBtn = modalElement.querySelector('[data-confirm]');
+            
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', () => modal.close());
+            }
+            
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', () => {
+                    onConfirm();
+                    modal.close();
+                });
+            }
+        }, 100);
     }
 
     static alert(message, title = 'Aviso') {
+        const modalId = 'modal-alert-' + Date.now();
         const modal = new Modal({
+            id: modalId,
             title: title,
             content: `
-                <p>${message}</p>
+                <p style="margin-bottom: 24px;">${message}</p>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" onclick="document.getElementById('${modal.id}').remove()">
+                    <button class="btn btn-primary" data-ok>
                         OK
                     </button>
                 </div>
@@ -86,5 +126,15 @@ export class Modal {
         });
         
         modal.show();
+        
+        setTimeout(() => {
+            const modalElement = document.getElementById(modalId);
+            const okBtn = modalElement.querySelector('[data-ok]');
+            
+            if (okBtn) {
+                okBtn.addEventListener('click', () => modal.close());
+            }
+        }, 100);
     }
 }
+

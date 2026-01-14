@@ -1,4 +1,4 @@
-// Página de gestão de clientes
+// Página de gestão de clientes - CORRIGIDA
 import { Header } from '../components/header.js';
 import { Modal } from '../components/modal.js';
 import { ClienteService } from '../services/clientes.js';
@@ -13,14 +13,14 @@ export class ClientesPage {
         return `
             ${Header.render()}
             <div class="container">
-                <div class="flex flex-between mb-md">
+                <div class="flex flex-between mb-6">
                     <h1>Gestão de Clientes</h1>
                     <button class="btn btn-primary" id="btn-novo-cliente">
                         + Novo Cliente
                     </button>
                 </div>
 
-                <div class="card mb-md">
+                <div class="card mb-6">
                     <input 
                         type="text" 
                         class="form-input" 
@@ -40,7 +40,10 @@ export class ClientesPage {
         // Event listeners
         const btnNovo = document.getElementById('btn-novo-cliente');
         if (btnNovo) {
-            btnNovo.addEventListener('click', () => this.showFormModal());
+            btnNovo.addEventListener('click', () => {
+                console.log('Clique no botão novo cliente');
+                this.showFormModal();
+            });
         }
         
         const searchInput = document.getElementById('search-input');
@@ -94,6 +97,35 @@ export class ClientesPage {
                 </table>
             </div>
         `;
+        
+        // Adicionar event listeners aos botões da tabela
+        this.attachTableListeners();
+    }
+
+    attachTableListeners() {
+        // Botões "Ver Detalhes"
+        document.querySelectorAll('[data-action="details"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const clienteId = btn.getAttribute('data-id');
+                this.showDetailsModal(clienteId);
+            });
+        });
+        
+        // Botões "Editar"
+        document.querySelectorAll('[data-action="edit"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const clienteId = btn.getAttribute('data-id');
+                this.showFormModal(clienteId);
+            });
+        });
+        
+        // Botões "Excluir"
+        document.querySelectorAll('[data-action="delete"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const clienteId = btn.getAttribute('data-id');
+                this.deleteCliente(clienteId);
+            });
+        });
     }
 
     renderClienteRow(cliente) {
@@ -102,19 +134,19 @@ export class ClientesPage {
 
         return `
             <tr>
-                <td><strong>${cliente.nome}</strong></td>
-                <td>${this.formatPhone(cliente.telefone)}</td>
-                <td>${cliente.instagram || '-'}</td>
-                <td>${dataNasc}</td>
-                <td>${totalProcedimentos}</td>
-                <td>
-                    <button class="btn btn-sm btn-outline" onclick="window.clientesPage.showDetailsModal('${cliente.id}')">
+                <td data-label="Nome"><strong>${cliente.nome}</strong></td>
+                <td data-label="Telefone">${this.formatPhone(cliente.telefone)}</td>
+                <td data-label="Instagram">${cliente.instagram || '-'}</td>
+                <td data-label="Aniversário">${dataNasc}</td>
+                <td data-label="Procedimentos">${totalProcedimentos}</td>
+                <td data-label="Ações" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button class="btn btn-sm btn-outline" data-action="details" data-id="${cliente.id}">
                         Ver Detalhes
                     </button>
-                    <button class="btn btn-sm btn-secondary" onclick="window.clientesPage.showFormModal('${cliente.id}')">
+                    <button class="btn btn-sm btn-secondary" data-action="edit" data-id="${cliente.id}">
                         Editar
                     </button>
-                    <button class="btn btn-sm btn-outline" style="border-color: var(--danger); color: var(--danger);" onclick="window.clientesPage.deleteCliente('${cliente.id}')">
+                    <button class="btn btn-sm btn-outline" style="border-color: var(--danger); color: var(--danger);" data-action="delete" data-id="${cliente.id}">
                         Excluir
                     </button>
                 </td>
@@ -131,7 +163,9 @@ export class ClientesPage {
         const cliente = clienteId ? ClienteService.getById(clienteId) : null;
         const isEdit = !!cliente;
 
+        const modalId = 'modal-cliente-' + Date.now();
         const modal = new Modal({
+            id: modalId,
             title: isEdit ? 'Editar Cliente' : 'Novo Cliente',
             content: `
                 <form id="cliente-form">
@@ -161,7 +195,7 @@ export class ClientesPage {
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('${modal.id}').remove()">
+                        <button type="button" class="btn btn-secondary" data-cancel>
                             Cancelar
                         </button>
                         <button type="submit" class="btn btn-primary">
@@ -174,48 +208,69 @@ export class ClientesPage {
 
         modal.show();
 
-        document.getElementById('cliente-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
-
-            if (isEdit) {
-                ClienteService.update(clienteId, data);
-                Modal.alert('Cliente atualizado com sucesso!');
-            } else {
-                ClienteService.create(data);
-                Modal.alert('Cliente cadastrado com sucesso!');
+        // Aguardar o DOM estar pronto
+        setTimeout(() => {
+            const form = document.getElementById('cliente-form');
+            const cancelBtn = document.querySelector('[data-cancel]');
+            
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', () => modal.close());
             }
+            
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    const data = Object.fromEntries(formData);
 
-            modal.close();
-            this.loadClientes();
-        });
+                    try {
+                        if (isEdit) {
+                            ClienteService.update(clienteId, data);
+                            Modal.alert('Cliente atualizado com sucesso!', 'Sucesso');
+                        } else {
+                            ClienteService.create(data);
+                            Modal.alert('Cliente cadastrado com sucesso!', 'Sucesso');
+                        }
+
+                        modal.close();
+                        this.loadClientes();
+                    } catch (error) {
+                        Modal.alert('Erro ao salvar cliente: ' + error.message, 'Erro');
+                    }
+                });
+            }
+        }, 100);
     }
 
     showDetailsModal(clienteId) {
         const cliente = ClienteService.getById(clienteId);
-        if (!cliente) return;
+        if (!cliente) {
+            Modal.alert('Cliente não encontrado!', 'Erro');
+            return;
+        }
 
         const historico = cliente.historico || [];
         const valorTotal = historico.reduce((sum, h) => sum + (h.valor || 0), 0);
 
+        const modalId = 'modal-details-' + Date.now();
         const modal = new Modal({
+            id: modalId,
             title: cliente.nome,
             content: `
-                <div class="mb-md">
+                <div class="mb-6">
                     <p><strong>Telefone:</strong> ${this.formatPhone(cliente.telefone)}</p>
                     <p><strong>Instagram:</strong> ${cliente.instagram || '-'}</p>
                     <p><strong>Aniversário:</strong> ${cliente.dataNascimento ? new Date(cliente.dataNascimento).toLocaleDateString('pt-BR') : '-'}</p>
                     ${cliente.observacoes ? `<p><strong>Observações:</strong> ${cliente.observacoes}</p>` : ''}
                 </div>
 
-                <div class="card mb-md">
+                <div class="card mb-6">
                     <h4>Estatísticas</h4>
                     <p><strong>Total de Procedimentos:</strong> ${historico.length}</p>
                     <p><strong>Valor Total Gasto:</strong> ${this.formatCurrency(valorTotal)}</p>
                 </div>
 
-                <h4 class="mb-sm">Histórico de Procedimentos</h4>
+                <h4 class="mb-4">Histórico de Procedimentos</h4>
                 ${historico.length === 0 ? '<p class="text-muted">Nenhum procedimento realizado</p>' : `
                     <div class="table-container">
                         <table class="table">
@@ -229,9 +284,9 @@ export class ClientesPage {
                             <tbody>
                                 ${historico.sort((a, b) => new Date(b.data) - new Date(a.data)).map(h => `
                                     <tr>
-                                        <td>${new Date(h.data).toLocaleDateString('pt-BR')}</td>
-                                        <td>${h.servico}</td>
-                                        <td>${this.formatCurrency(h.valor)}</td>
+                                        <td data-label="Data">${new Date(h.data).toLocaleDateString('pt-BR')}</td>
+                                        <td data-label="Serviço">${h.servico}</td>
+                                        <td data-label="Valor">${this.formatCurrency(h.valor)}</td>
                                     </tr>
                                 `).join('')}
                             </tbody>
@@ -240,7 +295,7 @@ export class ClientesPage {
                 `}
 
                 <div class="modal-footer">
-                    <button class="btn btn-primary" onclick="document.getElementById('${modal.id}').remove()">
+                    <button class="btn btn-primary" data-close-details>
                         Fechar
                     </button>
                 </div>
@@ -248,36 +303,43 @@ export class ClientesPage {
         });
 
         modal.show();
+
+        setTimeout(() => {
+            const closeBtn = document.querySelector('[data-close-details]');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => modal.close());
+            }
+        }, 100);
     }
 
     deleteCliente(clienteId) {
         const cliente = ClienteService.getById(clienteId);
         if (!cliente) return;
 
-        Modal.confirm(
-            `Tem certeza que deseja excluir o cliente "${cliente.nome}"? Esta ação não pode ser desfeita.`,
-            () => {
+        Modal.confirm(`Tem certeza que deseja excluir o cliente "${cliente.nome}"?`, () => {
+            try {
                 ClienteService.delete(clienteId);
-                Modal.alert('Cliente excluído com sucesso!');
+                Modal.alert('Cliente excluído com sucesso!', 'Sucesso');
                 this.loadClientes();
+            } catch (error) {
+                Modal.alert('Erro ao excluir cliente: ' + error.message, 'Erro');
             }
-        );
+        });
     }
 
     formatPhone(phone) {
         if (!phone) return '-';
         const cleaned = phone.replace(/\D/g, '');
         if (cleaned.length === 11) {
-            return `(${cleaned.substr(0,2)}) ${cleaned.substr(2,5)}-${cleaned.substr(7)}`;
+            return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(7)}`;
         }
         return phone;
     }
 
     formatCurrency(value) {
-        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
-    }
-
-    destroy() {
-        window.clientesPage = null;
+        return new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(value || 0);
     }
 }
