@@ -143,10 +143,3 @@ export class Header {
         });
     }
 }
-                        <a href="/" class="nav-link" data-link>Sair</a>
-                    </nav>
-                </div>
-            </header>
-        `;
-    }
-}
