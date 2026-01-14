@@ -244,6 +244,43 @@ export class AgendaPage {
                 </div>
             </div>
         `;
+        
+        // Adicionar event listeners
+        this.attachAgendamentoListeners();
+    }
+    
+    attachAgendamentoListeners() {
+        // Botões Confirmar
+        document.querySelectorAll('[data-action="confirmar"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                this.confirmarAgendamento(id);
+            });
+        });
+        
+        // Botões Concluir
+        document.querySelectorAll('[data-action="concluir"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                this.concluirAgendamento(id);
+            });
+        });
+        
+        // Botões Editar
+        document.querySelectorAll('[data-action="editar"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                this.showFormModal(id);
+            });
+        });
+        
+        // Botões Cancelar
+        document.querySelectorAll('[data-action="cancelar"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                this.cancelarAgendamento(id);
+            });
+        });
     }
 
     renderAgendamentoCard(agendamento) {
@@ -277,20 +314,20 @@ export class AgendaPage {
                     </div>
                     <div class="flex flex-column gap-sm">
                         ${agendamento.status === 'agendado' ? `
-                            <button class="btn btn-sm btn-primary" onclick="window.agendaPage.confirmarAgendamento('${agendamento.id}')">
+                            <button class="btn btn-sm btn-primary" data-action="confirmar" data-id="${agendamento.id}">
                                 Confirmar
                             </button>
                         ` : ''}
                         ${agendamento.status === 'confirmado' ? `
-                            <button class="btn btn-sm btn-primary" onclick="window.agendaPage.concluirAgendamento('${agendamento.id}')">
+                            <button class="btn btn-sm btn-primary" data-action="concluir" data-id="${agendamento.id}">
                                 Concluir
                             </button>
                         ` : ''}
-                        <button class="btn btn-sm btn-outline" onclick="window.agendaPage.showFormModal('${agendamento.id}')">
+                        <button class="btn btn-sm btn-outline" data-action="editar" data-id="${agendamento.id}">
                             Editar
                         </button>
                         ${agendamento.status !== 'cancelado' && agendamento.status !== 'concluido' ? `
-                            <button class="btn btn-sm btn-outline" style="border-color: var(--danger); color: var(--danger);" onclick="window.agendaPage.cancelarAgendamento('${agendamento.id}')">
+                            <button class="btn btn-sm btn-outline" style="border-color: var(--danger); color: var(--danger);" data-action="cancelar" data-id="${agendamento.id}">
                                 Cancelar
                             </button>
                         ` : ''}
