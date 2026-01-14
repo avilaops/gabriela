@@ -4,6 +4,7 @@ import { DashboardPage } from '../pages/dashboard.js';
 import { ClientesPage } from '../pages/clientes.js';
 import { AgendaPage } from '../pages/agenda.js';
 import { FinanceiroPage } from '../pages/financeiro.js';
+import { Header } from '../components/header.js';
 
 export class Router {
     constructor() {
@@ -55,6 +56,9 @@ export class Router {
         this.currentPage = new PageClass();
         const content = await this.currentPage.render();
         app.innerHTML = content;
+        
+        // Inicializar menu mobile do header
+        Header.initMobileMenu();
         
         // Inicializar página
         if (typeof this.currentPage.init === 'function') {

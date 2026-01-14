@@ -38,39 +38,6 @@ export class Header {
                         <span>🔑</span> Acessar Sistema
                     </a>
                 </nav>
-                
-                <script>
-                    // Mobile Menu Toggle
-                    const toggle = document.getElementById('mobile-menu-toggle');
-                    const overlay = document.getElementById('mobile-nav-overlay');
-                    const nav = document.getElementById('mobile-nav');
-                    
-                    function closeMobileMenu() {
-                        toggle?.classList.remove('active');
-                        overlay?.classList.remove('active');
-                        nav?.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                    
-                    toggle?.addEventListener('click', () => {
-                        toggle.classList.toggle('active');
-                        overlay.classList.toggle('active');
-                        nav.classList.toggle('active');
-                        
-                        if (nav.classList.contains('active')) {
-                            document.body.style.overflow = 'hidden';
-                        } else {
-                            document.body.style.overflow = '';
-                        }
-                    });
-                    
-                    overlay?.addEventListener('click', closeMobileMenu);
-                    
-                    // Close on navigation
-                    document.querySelectorAll('.mobile-nav-link').forEach(link => {
-                        link.addEventListener('click', closeMobileMenu);
-                    });
-                </script>
             `;
         }
         
@@ -138,40 +105,42 @@ export class Header {
                     </a>
                 </div>
             </nav>
-            
-            <script>
-                // Mobile Menu Toggle
-                const toggle = document.getElementById('mobile-menu-toggle');
-                const overlay = document.getElementById('mobile-nav-overlay');
-                const nav = document.getElementById('mobile-nav');
-                
-                function closeMobileMenu() {
-                    toggle?.classList.remove('active');
-                    overlay?.classList.remove('active');
-                    nav?.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-                
-                toggle?.addEventListener('click', () => {
-                    toggle.classList.toggle('active');
-                    overlay.classList.toggle('active');
-                    nav.classList.toggle('active');
-                    
-                    if (nav.classList.contains('active')) {
-                        document.body.style.overflow = 'hidden';
-                    } else {
-                        document.body.style.overflow = '';
-                    }
-                });
-                
-                overlay?.addEventListener('click', closeMobileMenu);
-                
-                // Close on navigation
-                document.querySelectorAll('.mobile-nav-link, .bottom-nav-item').forEach(link => {
-                    link.addEventListener('click', closeMobileMenu);
-                });
-            </script>
         `;
+    }
+    
+    static initMobileMenu() {
+        // Mobile Menu Toggle
+        const toggle = document.getElementById('mobile-menu-toggle');
+        const overlay = document.getElementById('mobile-nav-overlay');
+        const nav = document.getElementById('mobile-nav');
+        
+        if (!toggle || !overlay || !nav) return;
+        
+        function closeMobileMenu() {
+            toggle.classList.remove('active');
+            overlay.classList.remove('active');
+            nav.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        toggle.addEventListener('click', () => {
+            toggle.classList.toggle('active');
+            overlay.classList.toggle('active');
+            nav.classList.toggle('active');
+            
+            if (nav.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+        
+        overlay.addEventListener('click', closeMobileMenu);
+        
+        // Close on navigation
+        document.querySelectorAll('.mobile-nav-link, .bottom-nav-item').forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
     }
 }
                         <a href="/" class="nav-link" data-link>Sair</a>
