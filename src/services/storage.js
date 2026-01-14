@@ -18,9 +18,9 @@ export class StorageService {
         // Inicializar config
         if (!localStorage.getItem(this.KEYS.CONFIG)) {
             localStorage.setItem(this.KEYS.CONFIG, JSON.stringify({
-                nomeEstudio: 'Gabriela - Design de Sobrancelhas',
+                nomeEstudio: 'Gabriela Rincão - Design de Sobrancelhas',
                 whatsapp: '5517996820993',
-                instagram: '@gabriela.sobrancelhas',
+                instagram: '@gabrielarincao',
                 email: 'gabrielacasari@hotmail.com'
             }));
         }

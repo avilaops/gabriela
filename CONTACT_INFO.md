@@ -2,10 +2,10 @@
 
 ## Dados de Contato
 
-- **Nome:** Gabriela Casari
+- **Nome:** Gabriela Rincão (Gabriela Casari)
 - **Email:** gabrielacasari@hotmail.com
 - **Telefone/WhatsApp:** +55 17 99682-0993
-- **Instagram:** @gabriela.sobrancelhas
+- **Instagram:** @gabrielarincao
 
 ## Links Rápidos
 
@@ -17,7 +17,7 @@
 - Link direto: mailto:gabrielacasari@hotmail.com
 
 ### Instagram
-- URL: https://instagram.com/gabriela.sobrancelhas
+- URL: https://instagram.com/gabrielarincao
 
 ## Onde Estas Informações São Usadas
 
@@ -47,8 +47,8 @@ Se precisar alterar alguma informação de contato no futuro:
    - Substitua pelo novo email
 
 3. **Instagram:**
-   - Busque por `@gabriela.sobrancelhas`
-   - Substitua pelo novo @usuario
+- Busque por `@gabrielarincao`
+- Substitua pelo novo @usuario
 
 ## Comando de Busca
 

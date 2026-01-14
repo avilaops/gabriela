@@ -4,15 +4,15 @@ export class Header {
         if (isLanding) {
             return `
                 <header class="header">
-                    <div class="header-content">
-                        <div class="logo">Gabriela</div>
-                        <nav class="nav">
-                            <a href="/" class="nav-link" data-link>Home</a>
-                            <a href="#servicos" class="nav-link">Serviços</a>
-                            <a href="#depoimentos" class="nav-link">Depoimentos</a>
-                            <a href="/dashboard" class="btn btn-primary btn-sm" data-link>Acessar Sistema</a>
-                        </nav>
-                    </div>
+                <div class="header-content">
+                    <div class="logo">Gabriela Rincão</div>
+                    <nav class="nav">
+                        <a href="/" class="nav-link" data-link>Home</a>
+                        <a href="#servicos" class="nav-link">Serviços</a>
+                        <a href="#depoimentos" class="nav-link">Depoimentos</a>
+                        <a href="/dashboard" class="btn btn-primary btn-sm" data-link>Acessar Sistema</a>
+                    </nav>
+                </div>
                 </header>
             `;
         }

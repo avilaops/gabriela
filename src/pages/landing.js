@@ -73,28 +73,28 @@ export class LandingPage {
                     <h2 class="text-center mb-lg">Nossos Serviços</h2>
                     <div class="grid grid-2">
                         ${this.renderServico(
+                            'Brow Lamination',
+                            'Sobrancelhas disciplinadas, volumosas e com efeito lifting por até 2 meses',
+                            'A partir de R$ 150',
+                            ['Efeito natural', 'Duração de 6-8 semanas', 'Fios alinhados', 'Visual cheio']
+                        )}
+                        ${this.renderServico(
+                            'Nanofios',
+                            'Técnica de micropigmentação fio a fio ultra realista e natural',
+                            'A partir de R$ 800',
+                            ['Resultado hiper-realista', 'Fios ultrafinos', 'Duração 1-2 anos', 'Retoque incluso']
+                        )}
+                        ${this.renderServico(
                             'Design de Sobrancelhas',
                             'Técnica exclusiva que valoriza seu olhar e harmoniza com seu rosto',
                             'A partir de R$ 80',
                             ['Análise facial completa', 'Design personalizado', 'Técnica avançada', 'Duração: 40min']
                         )}
                         ${this.renderServico(
-                            'Micropigmentação',
-                            'Sobrancelhas perfeitas 24 horas por dia com resultado natural',
-                            'A partir de R$ 600',
-                            ['Técnica fio a fio', 'Pigmentos premium', 'Resultado duradouro', 'Retoque incluso']
-                        )}
-                        ${this.renderServico(
                             'Henna',
                             'Cor intensa e natural que dura até 15 dias',
                             'A partir de R$ 60',
                             ['100% natural', 'Diversas tonalidades', 'Sem contraindicações', 'Efeito imediato']
-                        )}
-                        ${this.renderServico(
-                            'Lifting de Cílios',
-                            'Cílios mais longos, curvados e volumosos naturalmente',
-                            'A partir de R$ 120',
-                            ['Efeito máscara', 'Duração de 2 meses', 'Realça o olhar', 'Baixa manutenção']
                         )}
                     </div>
                 </div>
@@ -177,10 +177,11 @@ export class LandingPage {
             <!-- Footer -->
             <footer style="background: var(--secondary); color: white; padding: 40px 24px; text-align: center;">
                 <div class="container">
-                    <h3 style="font-family: var(--font-display); margin-bottom: 24px; color: var(--primary);">Gabriela</h3>
-                    <p style="margin-bottom: 16px;">Design de Sobrancelhas</p>
+                    <h3 style="font-family: var(--font-display); margin-bottom: 24px; color: var(--primary);">Gabriela Rincão</h3>
+                    <p style="margin-bottom: 16px;">Brow Lamination • Nanofios • Design de Sobrancelhas</p>
+                    <p style="margin-bottom: 16px; font-size: 0.9rem; opacity: 0.8;">✨ 6 anos transformando olhares</p>
                     <div class="flex flex-center gap-md mb-md">
-                        <a href="https://instagram.com/gabriela.sobrancelhas" target="_blank" style="color: white;">
+                        <a href="https://instagram.com/gabrielarincao" target="_blank" style="color: white;">
                             📷 Instagram
                         </a>
                         <a href="https://wa.me/5517996820993" target="_blank" style="color: white;">

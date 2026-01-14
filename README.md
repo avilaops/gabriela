@@ -160,7 +160,7 @@ Edite diretamente na landing page (`src/pages/landing.js`):
 https://wa.me/5517996820993
 
 // Instagram
-@gabriela.sobrancelhas
+@gabrielarincao
 
 // Email
 gabrielacasari@hotmail.com

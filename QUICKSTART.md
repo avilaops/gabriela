@@ -71,7 +71,7 @@ Edite `src/assets/styles.css` (linhas 3-5):
 
 Edite `src/pages/landing.js`:
 - WhatsApp: Procure por `5517996820993` e substitua
-- Instagram: Procure por `@gabriela.sobrancelhas` e substitua
+- Instagram: Procure por `@gabrielarincao` e substitua
 - Email: Procure por `gabrielacasari@hotmail.com` e substitua
 
 ### Adicionar/Modificar Serviços

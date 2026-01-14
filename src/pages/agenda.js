@@ -314,10 +314,11 @@ export class AgendaPage {
                         <label class="form-label">Serviço *</label>
                         <select class="form-select" name="servico" required>
                             <option value="">Selecione um serviço</option>
+                            <option value="Brow Lamination" ${agendamento?.servico === 'Brow Lamination' ? 'selected' : ''}>Brow Lamination</option>
+                            <option value="Nanofios" ${agendamento?.servico === 'Nanofios' ? 'selected' : ''}>Nanofios</option>
                             <option value="Design de Sobrancelhas" ${agendamento?.servico === 'Design de Sobrancelhas' ? 'selected' : ''}>Design de Sobrancelhas</option>
-                            <option value="Micropigmentação" ${agendamento?.servico === 'Micropigmentação' ? 'selected' : ''}>Micropigmentação</option>
                             <option value="Henna" ${agendamento?.servico === 'Henna' ? 'selected' : ''}>Henna</option>
-                            <option value="Lifting de Cílios" ${agendamento?.servico === 'Lifting de Cílios' ? 'selected' : ''}>Lifting de Cílios</option>
+                            <option value="Micropigmentação" ${agendamento?.servico === 'Micropigmentação' ? 'selected' : ''}>Micropigmentação</option>
                             <option value="Despigmentação" ${agendamento?.servico === 'Despigmentação' ? 'selected' : ''}>Despigmentação</option>
                         </select>
                     </div>
