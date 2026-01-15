@@ -300,12 +300,14 @@
 /* ===== GLASSMORPHISM UTILITIES ===== */
 .glass {
     background: var(--glass-bg);
+    -webkit-backdrop-filter: var(--blur);
     backdrop-filter: var(--blur);
     border: 1px solid var(--glass-border);
 }
 
 .glass-dark {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.7);
+    -webkit-backdrop-filter: var(--blur);
     backdrop-filter: var(--blur);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
