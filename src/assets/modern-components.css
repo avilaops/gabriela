@@ -34,23 +34,23 @@
 }
 
 .badge-success {
-    background-color: var(--success-light);
-    color: var(--success);
+    background-color: rgba(16, 185, 129, 0.2);
+    color: #047857;
 }
 
 .badge-warning {
-    background-color: var(--warning-light);
-    color: var(--warning);
+    background-color: rgba(245, 158, 11, 0.2);
+    color: #b45309;
 }
 
 .badge-danger {
-    background-color: var(--danger-light);
-    color: var(--danger);
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #b91c1c;
 }
 
 .badge-info {
-    background-color: var(--info-light);
-    color: var(--info);
+    background-color: rgba(59, 130, 246, 0.2);
+    color: #1e40af;
 }
 
 /* ===== MODAL MODERNO ===== */

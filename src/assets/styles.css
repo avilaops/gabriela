@@ -27,8 +27,8 @@
     
     /* Texto - Hierarquia clara */
     --text-primary: #111827;
-    --text-secondary: #6b7280;
-    --text-tertiary: #9ca3af;
+    --text-secondary: #4b5563;
+    --text-tertiary: #6b7280;
     --text-inverse: #ffffff;
     
     /* Tipografia - San Francisco inspired */
@@ -149,6 +149,12 @@ a {
 
 a:hover {
     color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+a:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
 }
 
 /* ===== BOTÕES MODERNOS ===== */
@@ -230,7 +236,7 @@ a:hover {
 
 .btn-ghost {
     background-color: transparent;
-    color: var(--text-secondary);
+    color: var(--text-primary);
 }
 
 .btn-ghost:hover {
@@ -395,7 +401,7 @@ a:hover {
 
 .nav-link {
     font-weight: 600;
-    color: var(--text-secondary);
+    color: var(--text-primary);
     padding: var(--spacing-2) var(--spacing-4);
     border-radius: var(--radius-md);
     transition: var(--transition);
@@ -455,7 +461,7 @@ a:hover {
     padding: var(--spacing-sm);
     text-align: left;
     font-weight: 600;
-    color: var(--text-secondary);
+    color: var(--text-primary);
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -554,23 +560,23 @@ a:hover {
 }
 
 .badge-success {
-    background-color: rgba(94, 172, 123, 0.1);
-    color: var(--success);
+    background-color: rgba(16, 185, 129, 0.2);
+    color: #047857;
 }
 
 .badge-warning {
-    background-color: rgba(245, 166, 35, 0.1);
-    color: var(--warning);
+    background-color: rgba(245, 158, 11, 0.2);
+    color: #b45309;
 }
 
 .badge-danger {
-    background-color: rgba(231, 76, 60, 0.1);
-    color: var(--danger);
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #b91c1c;
 }
 
 .badge-info {
-    background-color: rgba(52, 152, 219, 0.1);
-    color: var(--info);
+    background-color: rgba(59, 130, 246, 0.2);
+    color: #1e40af;
 }
 
 /* ===== STATS ===== */
@@ -591,7 +597,6 @@ a:hover {
 
 .stat-label {
     font-size: 0.85rem;
-    opacity: 0.9;
     margin-bottom: 8px;
 }
 
@@ -636,7 +641,7 @@ a:hover {
     text-align: center;
     font-weight: 600;
     font-size: 0.85rem;
-    color: var(--text-secondary);
+    color: var(--text-primary);
     padding: 8px;
 }
 
@@ -695,7 +700,7 @@ a:hover {
 .empty-state-icon {
     font-size: 4rem;
     margin-bottom: var(--spacing-md);
-    opacity: 0.3;
+    opacity: 0.5;
 }
 
 /* ===== UTILITIES ===== */

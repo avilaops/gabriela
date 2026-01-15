@@ -75,26 +75,32 @@ export class LandingPage {
                         ${this.renderServico(
                             'Brow Lamination',
                             'Sobrancelhas disciplinadas, volumosas e com efeito lifting por até 2 meses',
-                            'A partir de R$ 150',
+                            'R$ 120',
                             ['Efeito natural', 'Duração de 6-8 semanas', 'Fios alinhados', 'Visual cheio']
                         )}
                         ${this.renderServico(
                             'Nanofios',
                             'Técnica de micropigmentação fio a fio ultra realista e natural',
-                            'A partir de R$ 800',
+                            'R$ 450',
                             ['Resultado hiper-realista', 'Fios ultrafinos', 'Duração 1-2 anos', 'Retoque incluso']
                         )}
                         ${this.renderServico(
                             'Design de Sobrancelhas',
                             'Técnica exclusiva que valoriza seu olhar e harmoniza com seu rosto',
-                            'A partir de R$ 80',
+                            'R$ 40',
                             ['Análise facial completa', 'Design personalizado', 'Técnica avançada', 'Duração: 40min']
                         )}
                         ${this.renderServico(
-                            'Henna',
-                            'Cor intensa e natural que dura até 15 dias',
-                            'A partir de R$ 60',
+                            'Design com Henna ou Coloração',
+                            'Design completo com coloração natural que dura até 15 dias',
+                            'R$ 50',
                             ['100% natural', 'Diversas tonalidades', 'Sem contraindicações', 'Efeito imediato']
+                        )}
+                        ${this.renderServico(
+                            'Hidragloss',
+                            'Tratamento hidratante e revitalizante para suas sobrancelhas',
+                            'R$ 130 a sessão',
+                            ['Hidratação profunda', 'Brilho natural', 'Fios fortalecidos', 'Resultado imediato']
                         )}
                     </div>
                 </div>
@@ -181,13 +187,13 @@ export class LandingPage {
                     <p style="margin-bottom: 16px;">Brow Lamination • Nanofios • Design de Sobrancelhas</p>
                     <p style="margin-bottom: 16px; font-size: 0.9rem; opacity: 0.8;">✨ 6 anos transformando olhares</p>
                     <div class="flex flex-center gap-md mb-md">
-                        <a href="https://instagram.com/gabrielarincao" target="_blank" style="color: white;">
+                        <a href="https://instagram.com/gabrielarincao" target="_blank" rel="noopener noreferrer" aria-label="Visite nosso Instagram" style="color: white; text-decoration: underline;">
                             📷 Instagram
                         </a>
-                        <a href="https://wa.me/5517996820993" target="_blank" style="color: white;">
+                        <a href="https://wa.me/5517996820993" target="_blank" rel="noopener noreferrer" aria-label="Fale conosco pelo WhatsApp" style="color: white; text-decoration: underline;">
                             📱 WhatsApp
                         </a>
-                        <a href="mailto:gabrielacasari@hotmail.com" style="color: white;">
+                        <a href="mailto:gabrielacasari@hotmail.com" aria-label="Envie um e-mail para gabrielacasari@hotmail.com" style="color: white; text-decoration: underline;">
                             ✉️ Email
                         </a>
                     </div>

@@ -1,6 +1,6 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "Gabriela Rincão - Brow Lamination e Nanofios",
+  "short_name": "Gabi",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -15,7 +15,8 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#ffffff",
+  "theme_color": "#D4A574",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "display": "standalone",
+  "description": "Estúdio de Design de Sobrancelhas, Brow Lamination e Nanofios"
 }
