@@ -16,13 +16,17 @@ export class AuthService {
 
     // Fazer login
     async login(email, password) {
+        console.log('Tentando login com:', email);
+        
         // Login temporário para desenvolvimento
         if (email === 'dev@localhost') {
+            console.log('Login dev');
             return this.devLogin();
         }
         
         // Autenticação simples sem backend
         if (email === 'admin@gabriela.com.br' && password === 'Gabriela@102030') {
+            console.log('Login admin válido');
             const session = {
                 email: 'admin@gabriela.com.br',
                 nome: 'Gabriela Rincão',
@@ -33,6 +37,7 @@ export class AuthService {
             return { success: true, session };
         }
         
+        console.log('Credenciais inválidas');
         return { success: false, error: 'Credenciais inválidas' };
         
         /* Código comentado para backend futuro:

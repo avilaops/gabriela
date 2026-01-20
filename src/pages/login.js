@@ -107,21 +107,27 @@ export class LoginPage {
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            console.log('Form submitted');
 
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
+            console.log('Email:', email, 'Password length:', password.length);
 
             // Validação básica
             if (!email || !password) {
+                console.log('Campos vazios');
                 this.showError('Por favor, preencha todos os campos');
                 return;
             }
 
             // Tentar fazer login
-            const result = authService.login(email, password);
+            console.log('Chamando authService.login');
+            const result = await authService.login(email, password);
+            console.log('Resultado do login:', result);
 
             if (result.success) {
                 // Login bem-sucedido
+                console.log('Login sucesso, redirecionando');
                 this.showSuccess('Login realizado! Redirecionando...');
                 
                 // Redirecionar após 500ms
@@ -130,6 +136,7 @@ export class LoginPage {
                 }, 500);
             } else {
                 // Mostrar erro
+                console.log('Login falhou:', result.error);
                 this.showError(result.error);
             }
         });
