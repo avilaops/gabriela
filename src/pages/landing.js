@@ -8,10 +8,11 @@ export class LandingPage {
             
             <!-- Hero Section -->
             <section style="
-                background: linear-gradient(135deg, rgba(212, 165, 116, 0.95) 0%, rgba(184, 145, 95, 0.95) 100%),
+                background: linear-gradient(135deg, rgba(212, 165, 116, 0.8) 0%, rgba(184, 145, 95, 0.8) 50%, rgba(150, 120, 80, 0.9) 100%),
                             url('./Identidade visual - Copia.jpg');
                 background-size: cover;
                 background-position: center;
+                background-blend-mode: overlay;
                 color: white;
                 padding: 120px 24px;
                 text-align: center;
