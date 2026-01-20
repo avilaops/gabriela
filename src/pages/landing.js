@@ -9,9 +9,9 @@ export class LandingPage {
             <!-- Hero Section -->
             <section style="
                 background: 
-                    linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 100%),
-                    linear-gradient(135deg, rgba(212, 165, 116, 0.6) 0%, rgba(184, 145, 95, 0.6) 50%, rgba(150, 120, 80, 0.7) 100%),
-                    url('./Identidade visual - Copia.avif');
+                    linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%),
+                    linear-gradient(135deg, rgba(212, 165, 116, 0.3) 0%, rgba(184, 145, 95, 0.3) 50%, rgba(150, 120, 80, 0.4) 100%),
+                    url('./background.avif');
                 background-size: cover;
                 background-position: center;
                 background-blend-mode: overlay;
@@ -41,7 +41,16 @@ export class LandingPage {
             </section>
 
             <!-- Depoimentos -->
-            <section style="padding: 80px 24px; background: var(--background);">
+            <section style="
+                padding: 80px 24px; 
+                background: 
+                    linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.98) 100%),
+                    url('./background.avif');
+                background-size: cover;
+                background-position: center;
+                background-blend-mode: overlay;
+                background-attachment: fixed;
+            ">
                 <div class="container">
                     <h2 class="text-center mb-lg">O Que Nossos Clientes Dizem</h2>
                     <div class="testimonials-carousel">
@@ -112,7 +121,16 @@ export class LandingPage {
             </section>
 
             <!-- Serviços -->
-            <section id="servicos" style="padding: 80px 24px; background: var(--background);">
+            <section id="servicos" style="
+                padding: 80px 24px; 
+                background: 
+                    linear-gradient(180deg, rgba(248,249,250,0.95) 0%, rgba(248,249,250,0.98) 100%),
+                    url('./background.avif');
+                background-size: cover;
+                background-position: center;
+                background-blend-mode: overlay;
+                background-attachment: fixed;
+            ">
                 <div class="container">
                     <h2 class="text-center mb-lg">Nossos Serviços</h2>
                     <div class="grid grid-2">

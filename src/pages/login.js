@@ -15,7 +15,12 @@ export class LoginPage {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background: linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, rgba(184, 145, 95, 0.1) 100%);
+                background: 
+                    linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, rgba(184, 145, 95, 0.1) 100%),
+                    url('../background.avif');
+                background-size: cover;
+                background-position: center;
+                background-blend-mode: overlay;
                 padding: 24px;
             ">
                 <div class="card" style="
