@@ -160,10 +160,13 @@ export class ClientesPage {
     }
 
     showFormModal(clienteId = null) {
+        console.log('showFormModal called with clienteId:', clienteId);
         const cliente = clienteId ? ClienteService.getById(clienteId) : null;
         const isEdit = !!cliente;
+        console.log('Cliente:', cliente, 'isEdit:', isEdit);
 
         const modalId = 'modal-cliente-' + Date.now();
+        console.log('Modal ID:', modalId);
         const modal = new Modal({
             id: modalId,
             title: isEdit ? 'Editar Cliente' : 'Novo Cliente',
@@ -206,22 +209,31 @@ export class ClientesPage {
             `
         });
 
+        console.log('Modal created, calling show');
         modal.show();
+        console.log('Modal shown');
 
         // Aguardar o DOM estar pronto
         setTimeout(() => {
+            console.log('setTimeout triggered');
             const form = document.getElementById('cliente-form');
             const cancelBtn = document.querySelector('[data-cancel]');
+            console.log('Form found:', !!form, 'Cancel btn found:', !!cancelBtn);
             
             if (cancelBtn) {
-                cancelBtn.addEventListener('click', () => modal.close());
+                cancelBtn.addEventListener('click', () => {
+                    console.log('Cancel clicked');
+                    modal.close();
+                });
             }
             
             if (form) {
                 form.addEventListener('submit', (e) => {
+                    console.log('Form submitted');
                     e.preventDefault();
                     const formData = new FormData(e.target);
                     const data = Object.fromEntries(formData);
+                    console.log('Form data:', data);
 
                     try {
                         if (isEdit) {
@@ -235,6 +247,7 @@ export class ClientesPage {
                         modal.close();
                         this.loadClientes();
                     } catch (error) {
+                        console.error('Error saving cliente:', error);
                         Modal.alert('Erro ao salvar cliente: ' + error.message, 'Erro');
                     }
                 });
