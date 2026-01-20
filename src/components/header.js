@@ -7,7 +7,9 @@ export class Header {
             return `
                 <header class="header">
                 <div class="header-content">
-                    <div class="logo">Gabriela Rincão</div>
+                    <div class="logo">
+                        <img src="./favicon-96x96.png" alt="Gabriela Rincão" style="height: 40px; width: auto;">
+                    </div>
                     <nav class="nav">
                         <a href="#/" class="nav-link" data-link>Home</a>
                         <a href="#servicos" class="nav-link">Serviços</a>
