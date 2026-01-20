@@ -56,9 +56,9 @@ export class LoginPage {
                                 type="email" 
                                 id="email" 
                                 class="form-control" 
-                                placeholder="seu@email.com"
+                                placeholder="Nome do Usuário"
                                 required
-                                autocomplete="email"
+                                autocomplete="Email"
                             />
                         </div>
 
