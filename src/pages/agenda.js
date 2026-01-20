@@ -346,7 +346,9 @@ export class AgendaPage {
             ? new Date(agendamento.dataHora).toISOString().slice(0, 16)
             : '';
 
+        const modalId = 'modal-agendamento-' + Date.now();
         const modal = new Modal({
+            id: modalId,
             title: isEdit ? 'Editar Agendamento' : 'Novo Agendamento',
             content: `
                 <form id="agendamento-form">
@@ -391,7 +393,7 @@ export class AgendaPage {
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('${modal.id}').remove()">
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('${modalId}').remove()">
                             Cancelar
                         </button>
                         <button type="submit" class="btn btn-primary">
