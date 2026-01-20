@@ -25,21 +25,12 @@ export class LoginPage {
                     text-align: center;
                 ">
                     <!-- Logo -->
-                    <div style="
+                    <img src="./favicon-96x96.png" alt="Gabriela Rincão" style="
                         width: 80px;
                         height: 80px;
                         margin: 0 auto 24px;
-                        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
                         border-radius: 20px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: 2rem;
-                        color: white;
-                        font-weight: bold;
                     ">
-                        GR
-                    </div>
 
                     <h1 style="margin-bottom: 8px; font-size: 1.75rem;">
                         Gabriela Rincão
