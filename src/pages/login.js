@@ -47,7 +47,7 @@ export class LoginPage {
                                 type="email" 
                                 id="email" 
                                 class="form-control" 
-                                placeholder="Nome do Usuário"
+                                placeholder="seu@email.com"
                                 required
                                 autocomplete="Email"
                             />

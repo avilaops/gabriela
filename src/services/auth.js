@@ -16,12 +16,11 @@ export class AuthService {
 
     // Fazer login
     async login(email, password) {
-        // TODO: Implementar chamada para backend
-        // Temporariamente bloqueado até backend estar pronto
-        console.error('❌ Auth desabilitado: backend necessário');
-        return { success: false, error: 'Sistema de autenticação em manutenção. Entre em contato.' };
+        // Login temporário para desenvolvimento
+        if (email === 'dev@localhost') {
+            return this.devLogin();
+        }
         
-        /* Implementação futura:
         try {
             const response = await fetch(`${this.apiUrl}/auth/login`, {
                 method: 'POST',
@@ -36,7 +35,6 @@ export class AuthService {
         } catch (error) {
             return { success: false, error: 'Erro ao conectar ao servidor' };
         }
-        */
     }
 
     // Login temporário para DEV APENAS (remover depois)

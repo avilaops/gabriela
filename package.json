@@ -1,0 +1,17 @@
+{
+  "name": "gabriela-rincao-site",
+  "version": "1.0.0",
+  "description": "Site institucional da Gabriela Rincão - Estúdio de Design de Sobrancelhas",
+  "main": "app.js",
+  "scripts": {
+    "dev": "http-server . -p 8080 -c-1",
+    "start": "http-server . -p 8080"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "keywords": ["sobrancelhas", "design", "beleza"],
+  "author": "Gabriela Rincão",
+  "license": "ISC"
+}

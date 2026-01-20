@@ -9,7 +9,7 @@ export class LandingPage {
             <!-- Hero Section -->
             <section style="
                 background: linear-gradient(135deg, rgba(212, 165, 116, 0.95) 0%, rgba(184, 145, 95, 0.95) 100%),
-                            url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1200 600%22><rect fill=%22%23D4A574%22 width=%221200%22 height=%22600%22/></svg>');
+                            url('./Identidade visual - Copia.jpg');
                 background-size: cover;
                 background-position: center;
                 color: white;
@@ -245,8 +245,8 @@ export class LandingPage {
     }
 
     init() {
-        // Smooth scroll para âncoras
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        // Smooth scroll para âncoras (excluindo rotas SPA)
+        document.querySelectorAll('a[href^="#"]:not([href^="#/"])').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
