@@ -8,8 +8,10 @@ export class LandingPage {
             
             <!-- Hero Section -->
             <section style="
-                background: linear-gradient(135deg, rgba(212, 165, 116, 0.8) 0%, rgba(184, 145, 95, 0.8) 50%, rgba(150, 120, 80, 0.9) 100%),
-                            url('./Identidade visual - Copia.avif');
+                background: 
+                    linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 100%),
+                    linear-gradient(135deg, rgba(212, 165, 116, 0.6) 0%, rgba(184, 145, 95, 0.6) 50%, rgba(150, 120, 80, 0.7) 100%),
+                    url('./Identidade visual - Copia.avif');
                 background-size: cover;
                 background-position: center;
                 background-blend-mode: overlay;
@@ -18,10 +20,10 @@ export class LandingPage {
                 text-align: center;
             ">
                 <div class="container">
-                    <h1 style="font-size: 3.5rem; margin-bottom: 24px; font-weight: 700;">
+                    <h1 style="font-size: 3rem; margin-bottom: 24px; font-weight: 700; max-width: 820px; margin-left: auto; margin-right: auto; line-height: 1.1;">
                         Realce Sua Beleza Natural
                     </h1>
-                    <p style="font-size: 1.5rem; margin-bottom: 40px; opacity: 0.95;">
+                    <p style="font-size: 1.5rem; margin-bottom: 40px; opacity: 0.95; max-width: 600px; margin-left: auto; margin-right: auto;">
                         Design de sobrancelhas com técnica, precisão e elegância
                     </p>
                     <div class="flex flex-center gap-md" style="flex-wrap: wrap;">
@@ -31,9 +33,50 @@ export class LandingPage {
                            target="_blank">
                             📱 Agende pelo WhatsApp
                         </a>
-                        <a href="#servicos" class="btn btn-lg btn-outline" style="border-color: white; color: white;">
+                        <a href="#servicos" class="btn btn-lg btn-outline" style="border-color: rgba(255,255,255,0.8); color: white; background: transparent;">
                             Ver Serviços
                         </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Depoimentos -->
+            <section style="padding: 80px 24px; background: var(--background);">
+                <div class="container">
+                    <h2 class="text-center mb-lg">O Que Nossos Clientes Dizem</h2>
+                    <div class="testimonials-carousel">
+                        <div class="testimonial active">
+                            <div class="testimonial-content">
+                                <p class="testimonial-text">"A técnica da Gabriela é incrível! Minhas sobrancelhas nunca ficaram tão perfeitas. Recomendo demais!"</p>
+                                <div class="testimonial-author">
+                                    <strong>Ana Carolina</strong>
+                                    <span class="text-secondary">Cliente há 1 ano</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial">
+                            <div class="testimonial-content">
+                                <p class="testimonial-text">"Resultado natural e duradouro. O atendimento é impecável e o ambiente super acolhedor."</p>
+                                <div class="testimonial-author">
+                                    <strong>Mariana Silva</strong>
+                                    <span class="text-secondary">Cliente fiel</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial">
+                            <div class="testimonial-content">
+                                <p class="testimonial-text">"Transformou completamente meu olhar! Técnica profissional e resultado que supera as expectativas."</p>
+                                <div class="testimonial-author">
+                                    <strong>Carla Santos</strong>
+                                    <span class="text-secondary">Cliente satisfeita</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-indicators">
+                        <span class="indicator active" data-slide="0"></span>
+                        <span class="indicator" data-slide="1"></span>
+                        <span class="indicator" data-slide="2"></span>
                     </div>
                 </div>
             </section>
@@ -197,12 +240,23 @@ export class LandingPage {
                         <a href="mailto:gabrielacasari@hotmail.com" aria-label="Envie um e-mail para gabrielacasari@hotmail.com" style="color: white; text-decoration: underline;">
                             ✉️ Email
                         </a>
+                        <a href="#/login" data-link style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem;">
+                            Área Admin
+                        </a>
                     </div>
                     <p style="opacity: 0.7; font-size: 0.9rem;">
                         © ${new Date().getFullYear()} Gabriela - Todos os direitos reservados
                     </p>
                 </div>
             </footer>
+
+            <!-- Sticky WhatsApp Button -->
+            <a href="https://wa.me/5517996820993?text=Olá! Gostaria de agendar um horário" 
+               class="whatsapp-sticky" 
+               target="_blank" 
+               aria-label="Agendar pelo WhatsApp">
+                📱
+            </a>
         `;
     }
 
@@ -256,5 +310,58 @@ export class LandingPage {
                 }
             });
         });
+
+        // Testimonials Carousel
+        this.initTestimonialsCarousel();
+    }
+
+    initTestimonialsCarousel() {
+        const testimonials = document.querySelectorAll('.testimonial');
+        const indicators = document.querySelectorAll('.indicator');
+        let currentSlide = 0;
+        let autoSlideInterval;
+
+        const showSlide = (index) => {
+            testimonials.forEach((testimonial, i) => {
+                testimonial.classList.toggle('active', i === index);
+            });
+            indicators.forEach((indicator, i) => {
+                indicator.classList.toggle('active', i === index);
+            });
+            currentSlide = index;
+        };
+
+        const nextSlide = () => {
+            const nextIndex = (currentSlide + 1) % testimonials.length;
+            showSlide(nextIndex);
+        };
+
+        // Auto-rotate every 4 seconds
+        const startAutoSlide = () => {
+            autoSlideInterval = setInterval(nextSlide, 4000);
+        };
+
+        const stopAutoSlide = () => {
+            clearInterval(autoSlideInterval);
+        };
+
+        // Indicator click handlers
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                showSlide(index);
+                stopAutoSlide();
+                startAutoSlide(); // Restart auto-slide
+            });
+        });
+
+        // Pause on hover
+        const carousel = document.querySelector('.testimonials-carousel');
+        if (carousel) {
+            carousel.addEventListener('mouseenter', stopAutoSlide);
+            carousel.addEventListener('mouseleave', startAutoSlide);
+        }
+
+        // Start auto-slide
+        startAutoSlide();
     }
 }

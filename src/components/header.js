@@ -14,7 +14,6 @@ export class Header {
                         <a href="#/" class="nav-link" data-link>Home</a>
                         <a href="#servicos" class="nav-link">Serviços</a>
                         <a href="#depoimentos" class="nav-link">Depoimentos</a>
-                        <a href="#/login" class="btn btn-primary btn-sm" data-link>Área Administrativa</a>
                     </nav>
                     
                     <!-- Mobile Menu Toggle -->
