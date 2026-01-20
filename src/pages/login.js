@@ -1,0 +1,169 @@
+// Página de Login
+import { authService } from '/src/services/auth.js';
+
+export class LoginPage {
+    async render() {
+        // Se já está autenticado, redirecionar para dashboard
+        if (authService.isAuthenticated()) {
+            window.location.hash = '#/dashboard';
+            return '';
+        }
+
+        return `
+            <div style="
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, rgba(184, 145, 95, 0.1) 100%);
+                padding: 24px;
+            ">
+                <div class="card" style="
+                    max-width: 400px;
+                    width: 100%;
+                    padding: 48px 32px;
+                    text-align: center;
+                ">
+                    <!-- Logo -->
+                    <div style="
+                        width: 80px;
+                        height: 80px;
+                        margin: 0 auto 24px;
+                        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+                        border-radius: 20px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 2rem;
+                        color: white;
+                        font-weight: bold;
+                    ">
+                        GR
+                    </div>
+
+                    <h1 style="margin-bottom: 8px; font-size: 1.75rem;">
+                        Gabriela Rincão
+                    </h1>
+                    <p class="text-secondary" style="margin-bottom: 32px;">
+                        Sistema Administrativo
+                    </p>
+
+                    <!-- Formulário de Login -->
+                    <form id="loginForm" style="text-align: left;">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                class="form-control" 
+                                placeholder="seu@email.com"
+                                required
+                                autocomplete="email"
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Senha</label>
+                            <input 
+                                type="password" 
+                                id="password" 
+                                class="form-control" 
+                                placeholder="••••••••"
+                                required
+                                autocomplete="current-password"
+                            />
+                        </div>
+
+                        <!-- Mensagem de erro -->
+                        <div id="loginError" style="
+                            display: none;
+                            padding: 12px;
+                            background: #fee;
+                            color: #c33;
+                            border-radius: 8px;
+                            margin-bottom: 16px;
+                            font-size: 0.875rem;
+                        "></div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 16px;">
+                            🔐 Entrar no Sistema
+                        </button>
+                    </form>
+
+                    <!-- Link para área pública -->
+                    <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
+                        <a href="#/" class="text-secondary" style="
+                            text-decoration: none;
+                            font-size: 0.875rem;
+                        ">
+                            ← Voltar para o site
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    async afterRender() {
+        this.setupLoginForm();
+    }
+
+    setupLoginForm() {
+        const form = document.getElementById('loginForm');
+        const errorDiv = document.getElementById('loginError');
+
+        if (!form) return;
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            // Validação básica
+            if (!email || !password) {
+                this.showError('Por favor, preencha todos os campos');
+                return;
+            }
+
+            // Tentar fazer login
+            const result = authService.login(email, password);
+
+            if (result.success) {
+                // Login bem-sucedido
+                this.showSuccess('Login realizado! Redirecionando...');
+                
+                // Redirecionar após 500ms
+                setTimeout(() => {
+                    window.location.hash = '#/dashboard';
+                }, 500);
+            } else {
+                // Mostrar erro
+                this.showError(result.error);
+            }
+        });
+    }
+
+    showError(message) {
+        const errorDiv = document.getElementById('loginError');
+        if (errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+
+            // Esconder após 5 segundos
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+    }
+
+    showSuccess(message) {
+        const errorDiv = document.getElementById('loginError');
+        if (errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.style.background = '#efe';
+            errorDiv.style.color = '#3a3';
+            errorDiv.style.display = 'block';
+        }
+    }
+}
