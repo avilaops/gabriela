@@ -21,6 +21,21 @@ export class AuthService {
             return this.devLogin();
         }
         
+        // Autenticação simples sem backend
+        if (email === 'admin@gabriela.com.br' && password === 'Gabriela@102030') {
+            const session = {
+                email: 'admin@gabriela.com.br',
+                nome: 'Gabriela Rincão',
+                role: 'admin',
+                loginAt: new Date().toISOString()
+            };
+            localStorage.setItem(this.storageKey, JSON.stringify(session));
+            return { success: true, session };
+        }
+        
+        return { success: false, error: 'Credenciais inválidas' };
+        
+        /* Código comentado para backend futuro:
         try {
             const response = await fetch(`${this.apiUrl}/auth/login`, {
                 method: 'POST',
@@ -35,6 +50,7 @@ export class AuthService {
         } catch (error) {
             return { success: false, error: 'Erro ao conectar ao servidor' };
         }
+        */
     }
 
     // Login temporário para DEV APENAS (remover depois)
