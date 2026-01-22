@@ -16,7 +16,7 @@ export class LoginPage {
                 align-items: center;
                 justify-content: center;
                 background: 
-                    linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, rgba(184, 145, 95, 0.1) 100%),
+                    linear-gradient(135deg, rgba(212, 165, 116, 0.05) 0%, rgba(184, 145, 95, 0.05) 100%),
                     url('../background.avif');
                 background-size: cover;
                 background-position: center;

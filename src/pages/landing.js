@@ -9,8 +9,8 @@ export class LandingPage {
             <!-- Hero Section -->
             <section style="
                 background: 
-                    linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%),
-                    linear-gradient(135deg, rgba(212, 165, 116, 0.3) 0%, rgba(184, 145, 95, 0.3) 50%, rgba(150, 120, 80, 0.4) 100%),
+                    linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 100%),
+                    linear-gradient(135deg, rgba(212, 165, 116, 0.2) 0%, rgba(184, 145, 95, 0.2) 50%, rgba(150, 120, 80, 0.3) 100%),
                     url('./background.avif');
                 background-size: cover;
                 background-position: center;
@@ -44,7 +44,7 @@ export class LandingPage {
             <section style="
                 padding: 80px 24px; 
                 background: 
-                    linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.98) 100%),
+                    linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.92) 100%),
                     url('./background.avif');
                 background-size: cover;
                 background-position: center;
@@ -124,7 +124,7 @@ export class LandingPage {
             <section id="servicos" style="
                 padding: 80px 24px; 
                 background: 
-                    linear-gradient(180deg, rgba(248,249,250,0.95) 0%, rgba(248,249,250,0.98) 100%),
+                    linear-gradient(180deg, rgba(248,249,250,0.85) 0%, rgba(248,249,250,0.92) 100%),
                     url('./background.avif');
                 background-size: cover;
                 background-position: center;

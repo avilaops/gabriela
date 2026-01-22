@@ -11,7 +11,7 @@ export class DashboardPage {
             ${Header.render()}
             <div class="container" style="
                 background: 
-                    linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.99) 100%),
+                    linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.95) 100%),
                     url('../background.avif');
                 background-size: cover;
                 background-position: center;
