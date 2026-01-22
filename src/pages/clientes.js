@@ -194,42 +194,58 @@ export class ClientesPage {
     }
 
     showFormModal(clienteId = null) {
-        Utils.log('showFormModal called with clienteId:', clienteId);
-        const cliente = clienteId ? ClienteService.getById(clienteId) : null;
-        const isEdit = !!cliente;
-        Utils.log('Cliente:', cliente, 'isEdit:', isEdit);
+        Utils.log('Abrindo modal de cliente', { clienteId });
 
-        const modalId = 'modal-cliente-' + Date.now();
-        const formId = 'cliente-form-' + Date.now();
-        Utils.log('Modal ID:', modalId, 'Form ID:', formId);
+        const cliente = clienteId ? ClienteService.getById(clienteId) : null;
+        const isEdit = Boolean(cliente);
+
+        const timestamp = Date.now();
+        const modalId = `modal-cliente-${timestamp}`;
+        const formId = `cliente-form-${timestamp}`;
+
+        const formDefaults = {
+            nome: cliente?.nome || '',
+            telefone: cliente?.telefone || '',
+            instagram: cliente?.instagram || '',
+            dataNascimento: cliente?.dataNascimento || '',
+            observacoes: cliente?.observacoes || ''
+        };
+
+        if (formDefaults.dataNascimento) {
+            const parsedDate = new Date(formDefaults.dataNascimento);
+            if (!Number.isNaN(parsedDate.getTime())) {
+                formDefaults.dataNascimento = parsedDate.toISOString().split('T')[0];
+            }
+        }
+
         const modal = new Modal({
             id: modalId,
             title: isEdit ? 'Editar Cliente' : 'Novo Cliente',
             content: `
-                <form id="${formId}">
+                <form id="${formId}" novalidate>
                     <div class="form-group">
                         <label class="form-label">Nome *</label>
-                        <input type="text" class="form-input" name="nome" value="${cliente?.nome || ''}" required>
+                        <input type="text" class="form-input" name="nome" value="${Utils.sanitizeHTML(formDefaults.nome)}" required>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Telefone *</label>
-                        <input type="tel" class="form-input" name="telefone" value="${cliente?.telefone || ''}" placeholder="(11) 99999-9999" required>
+                        <input type="tel" class="form-input" name="telefone" value="${Utils.sanitizeHTML(formDefaults.telefone)}" placeholder="(11) 99999-9999" required>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Instagram</label>
-                        <input type="text" class="form-input" name="instagram" value="${cliente?.instagram || ''}" placeholder="@usuario">
+                        <input type="text" class="form-input" name="instagram" value="${Utils.sanitizeHTML(formDefaults.instagram)}" placeholder="@usuario">
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Data de Nascimento</label>
-                        <input type="date" class="form-input" name="dataNascimento" value="${cliente?.dataNascimento || ''}">
+                        <input type="date" class="form-input" name="dataNascimento" value="${Utils.sanitizeHTML(formDefaults.dataNascimento)}">
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Observações</label>
-                        <textarea class="form-textarea" name="observacoes">${cliente?.observacoes || ''}</textarea>
+                        <textarea class="form-textarea" name="observacoes">${Utils.sanitizeHTML(formDefaults.observacoes)}</textarea>
                     </div>
 
                     <div class="modal-footer">
@@ -244,62 +260,71 @@ export class ClientesPage {
             `
         });
 
-        Utils.log('Modal created, calling show');
         modal.show();
-        Utils.log('Modal shown');
 
-        // Aguardar o DOM estar pronto
-        setTimeout(() => {
-            Utils.log('setTimeout triggered');
+        const initializeForm = () => {
             const form = document.getElementById(formId);
-            const cancelBtn = document.querySelector('[data-cancel]');
-            Utils.log('Form found:', !!form, 'Cancel btn found:', !!cancelBtn);
-            
+
+            if (!form) {
+                Utils.log('Formulário de cliente não encontrado, nova tentativa...');
+                requestAnimationFrame(initializeForm);
+                return;
+            }
+
+            const cancelBtn = form.querySelector('[data-cancel]');
             if (cancelBtn) {
-                cancelBtn.addEventListener('click', () => {
-                    Utils.log('Cancel clicked');
+                cancelBtn.addEventListener('click', (event) => {
+                    event.preventDefault();
                     modal.close();
                 });
             }
-            
-            if (form) {
-                form.addEventListener('submit', (e) => {
-                    Utils.log('Form submitted');
-                    e.preventDefault();
-                    const formData = new FormData(e.target);
-                    const data = Object.fromEntries(formData);
-                    Utils.log('Form data:', data);
 
-                    // Validação básica
-                    if (!data.nome || !data.nome.trim()) {
-                        Modal.alert('Por favor, informe o nome do cliente.', 'Erro');
-                        return;
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
+                const payload = {
+                    nome: data.nome?.trim() || '',
+                    telefone: data.telefone?.trim() || '',
+                    instagram: data.instagram?.trim() || '',
+                    dataNascimento: data.dataNascimento || '',
+                    observacoes: data.observacoes?.trim() || ''
+                };
+
+                if (!payload.nome) {
+                    Modal.alert('Por favor, informe o nome do cliente.', 'Erro');
+                    form.querySelector('[name="nome"]').focus();
+                    return;
+                }
+
+                if (!payload.telefone) {
+                    Modal.alert('Por favor, informe o telefone do cliente.', 'Erro');
+                    form.querySelector('[name="telefone"]').focus();
+                    return;
+                }
+
+                try {
+                    if (isEdit) {
+                        ClienteService.update(clienteId, payload);
+                        Modal.alert('Cliente atualizado com sucesso!', 'Sucesso');
+                    } else {
+                        const novoCliente = ClienteService.create(payload);
+                        Utils.log('Cliente cadastrado com sucesso', novoCliente);
+                        Modal.alert('Cliente cadastrado com sucesso!', 'Sucesso');
                     }
 
-                    if (!data.telefone || !data.telefone.trim()) {
-                        Modal.alert('Por favor, informe o telefone do cliente.', 'Erro');
-                        return;
-                    }
+                    modal.close();
+                    this.loadClientes();
+                } catch (error) {
+                    Utils.log('Erro ao salvar cliente', error);
+                    Modal.alert('Erro ao salvar cliente: ' + error.message, 'Erro');
+                }
+            }, { once: true });
+        };
 
-                    try {
-                        if (isEdit) {
-                            ClienteService.update(clienteId, data);
-                            Modal.alert('Cliente atualizado com sucesso!', 'Sucesso');
-                        } else {
-                            const novoCliente = ClienteService.create(data);
-                            Utils.log('Cliente criado:', novoCliente);
-                            Modal.alert('Cliente cadastrado com sucesso!', 'Sucesso');
-                        }
-
-                        modal.close();
-                        this.loadClientes();
-                    } catch (error) {
-                        Utils.log('Error saving cliente:', error);
-                        Modal.alert('Erro ao salvar cliente: ' + error.message, 'Erro');
-                    }
-                });
-            }
-        }, 100);
+        requestAnimationFrame(initializeForm);
     }
 
     showDetailsModal(clienteId) {
