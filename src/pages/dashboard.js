@@ -10,18 +10,9 @@ export class DashboardPage {
         return `
             ${Header.render()}
             <div class="container" style="
-                background: 
-                    linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.95) 100%),
-                    url('../background.avif');
-                background-size: cover;
-                background-position: center;
-                background-blend-mode: overlay;
-                background-attachment: fixed;
+                background: var(--background);
                 min-height: calc(100vh - 80px);
                 padding: 24px;
-                border-radius: 16px;
-                margin: 24px auto;
-                box-shadow: var(--shadow-lg);
             ">
                 <h1 class="mb-lg">Dashboard</h1>
 
