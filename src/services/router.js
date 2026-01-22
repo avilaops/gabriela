@@ -7,6 +7,7 @@ import { AgendaPage } from '../pages/agenda.js';
 import { FinanceiroPage } from '../pages/financeiro.js';
 import { Header } from '../components/header.js';
 import { authService } from '../services/auth.js';
+import { Utils } from '../utils/utils.js';
 
 export class Router {
     constructor() {
@@ -26,11 +27,10 @@ export class Router {
     }
 
     init() {
-        // Login automático em desenvolvimento
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            if (!authService.isAuthenticated()) {
-                authService.login('admin@gabriela.com.br', 'Gabriela@102030');
-            }
+        // Login automático apenas em desenvolvimento
+        if (Utils.isDevelopment() && !authService.isAuthenticated()) {
+            Utils.log('Executando login automático de desenvolvimento');
+            authService.devLogin?.();
         }
 
         // Listener para mudanças de hash

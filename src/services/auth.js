@@ -28,7 +28,7 @@ export class AuthService {
         
         // Autenticação simples sem backend
         if (email === 'admin@gabriela.com.br' && password === 'Gabriela@102030') {
-            console.log('Login admin válido');
+            Utils.log('Login admin válido');
             const session = {
                 email: 'admin@gabriela.com.br',
                 nome: 'Gabriela Rincão',
@@ -39,7 +39,7 @@ export class AuthService {
             return { success: true, session };
         }
         
-        console.log('Credenciais inválidas');
+            Utils.log('Credenciais inválidas');
         return { success: false, error: 'Credenciais inválidas' };
         
         /* Código comentado para backend futuro:
@@ -62,8 +62,8 @@ export class AuthService {
 
     // Login temporário para DEV APENAS (remover depois)
     devLogin() {
-        if (window.location.hostname !== 'localhost') {
-            console.error('❌ devLogin só funciona em localhost');
+        if (!Utils.isDevelopment()) {
+            console.error('❌ devLogin só funciona em ambiente de desenvolvimento');
             return { success: false };
         }
         

@@ -1,5 +1,6 @@
 // Página de Login
-import { authService } from '/src/services/auth.js';
+import { authService } from '../services/auth.js';
+import { Utils } from '../utils/utils.js';
 
 export class LoginPage {
     async render() {
@@ -112,27 +113,27 @@ export class LoginPage {
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            console.log('Form submitted');
+            Utils.log('Formulário de login enviado');
 
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
-            console.log('Email:', email, 'Password length:', password.length);
+            Utils.log('Tentativa de login', { email, passwordLength: password.length });
 
             // Validação básica
             if (!email || !password) {
-                console.log('Campos vazios');
+                Utils.log('Tentativa de login com campos vazios');
                 this.showError('Por favor, preencha todos os campos');
                 return;
             }
 
             // Tentar fazer login
-            console.log('Chamando authService.login');
+            Utils.log('Chamando authService.login');
             const result = await authService.login(email, password);
-            console.log('Resultado do login:', result);
+            Utils.log('Resultado do login:', result);
 
             if (result.success) {
                 // Login bem-sucedido
-                console.log('Login sucesso, redirecionando');
+                Utils.log('Login bem-sucedido, redirecionando para dashboard');
                 this.showSuccess('Login realizado! Redirecionando...');
                 
                 // Redirecionar após 500ms
@@ -141,7 +142,7 @@ export class LoginPage {
                 }, 500);
             } else {
                 // Mostrar erro
-                console.log('Login falhou:', result.error);
+                Utils.log('Login falhou:', result.error);
                 this.showError(result.error);
             }
         });

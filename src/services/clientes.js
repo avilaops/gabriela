@@ -1,5 +1,6 @@
 // Serviço de gestão de clientes
 import { StorageService } from './storage.js';
+import { Utils } from '../utils/utils.js';
 
 export class ClienteService {
     static STORAGE_KEY = StorageService.KEYS.CLIENTES;
@@ -7,7 +8,7 @@ export class ClienteService {
     static getAll() {
         const result = StorageService.getAll(this.STORAGE_KEY)
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        console.log('Clientes encontrados:', result.length);
+        Utils.log('Clientes encontrados:', result.length);
         return result;
     }
 
@@ -25,7 +26,7 @@ export class ClienteService {
             historico: []
         };
         const result = StorageService.add(this.STORAGE_KEY, cliente);
-        console.log('Cliente criado:', result);
+        Utils.log('Cliente criado:', result);
         return result;
     }
 

@@ -60,20 +60,52 @@ export class Utils {
     }
 
     /**
+     * Determina se está rodando no navegador
+     */
+    static isBrowser() {
+        return typeof window !== 'undefined' && typeof window.location !== 'undefined';
+    }
+
+    /**
+     * Verifica se o hostname é considerado ambiente local
+     */
+    static isLocalhost(hostname) {
+        return ['localhost', '127.0.0.1', '[::1]'].includes(hostname);
+    }
+
+    /**
+     * Retorna true quando estiver em ambiente de desenvolvimento
+     */
+    static isDevelopment() {
+        if (this.isBrowser()) {
+            const hostname = window.location.hostname;
+            if (this.isLocalhost(hostname)) {
+                return true;
+            }
+        }
+
+        if (typeof process !== 'undefined' && process.env) {
+            const nodeEnv = process.env.NODE_ENV;
+            if (nodeEnv) {
+                return nodeEnv !== 'production';
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Retorna true quando estiver em ambiente de produção
+     */
+    static isProduction() {
+        return !this.isDevelopment();
+    }
+
+    /**
      * Logger condicional (apenas em desenvolvimento)
      */
     static log(...args) {
-        // Verificar se estamos em desenvolvimento
-        const isDevelopment = (
-            // Verificar se process existe (Node.js) e NODE_ENV é development
-            (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'development') ||
-            // Ou se estamos em localhost
-            (typeof window !== 'undefined' && window.location && window.location.hostname === 'localhost') ||
-            // Ou se estamos em 127.0.0.1
-            (typeof window !== 'undefined' && window.location && window.location.hostname === '127.0.0.1')
-        );
-
-        if (isDevelopment) {
+        if (this.isDevelopment()) {
             console.log(...args);
         }
     }
