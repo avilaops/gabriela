@@ -246,28 +246,72 @@ export class LandingPage {
             </section>
 
             <!-- Footer -->
-            <footer style="background: var(--secondary); color: white; padding: 40px 24px; text-align: center;">
-                <div class="container">
-                    <h3 style="font-family: var(--font-display); margin-bottom: 24px; color: var(--primary);">Gabriela Rincão</h3>
-                    <p style="margin-bottom: 16px;">Brow Lamination • Nanofios • Design de Sobrancelhas</p>
-                    <p style="margin-bottom: 16px; font-size: 0.9rem; opacity: 0.8;">✨ 6 anos transformando olhares</p>
-                    <div class="flex flex-center gap-md mb-md">
-                        <a href="https://instagram.com/gabrielarincao" target="_blank" rel="noopener noreferrer" aria-label="Visite nosso Instagram" style="color: white; text-decoration: underline;">
-                            📷 Instagram
-                        </a>
-                        <a href="https://wa.me/5517996820993" target="_blank" rel="noopener noreferrer" aria-label="Fale conosco pelo WhatsApp" style="color: white; text-decoration: underline;">
-                            📱 WhatsApp
-                        </a>
-                        <a href="mailto:gabrielacasari@hotmail.com" aria-label="Envie um e-mail para gabrielacasari@hotmail.com" style="color: white; text-decoration: underline;">
-                            ✉️ Email
-                        </a>
-                        <a href="#/login" data-link style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem;">
-                            Área Admin
+            <footer style="background: var(--secondary); color: white; padding: 60px 24px 24px; text-align: center;">
+                <div class="container" style="max-width: 1200px; margin: 0 auto;">
+                    <!-- Logo e Tagline -->
+                    <div style="margin-bottom: 32px;">
+                        <h3 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 8px; color: var(--primary);">
+                            Gabriela Rincão
+                        </h3>
+                        <p style="font-size: 1rem; margin-bottom: 8px; opacity: 0.9;">
+                            Design de Sobrancelhas | Brow Lamination | Nanofios
+                        </p>
+                        <p style="font-size: 0.9rem; opacity: 0.7;">
+                            ✨ 6 anos transformando olhares com técnica e elegância
+                        </p>
+                    </div>
+
+                    <!-- Links Sociais -->
+                    <div style="margin-bottom: 32px;">
+                        <div style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 24px;">
+                            <a href="https://instagram.com/gabrielarincao" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               aria-label="Visite nosso Instagram"
+                               style="color: white; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: opacity 0.3s;"
+                               onmouseover="this.style.opacity='0.7'" 
+                               onmouseout="this.style.opacity='1'">
+                                <span style="font-size: 1.5rem;">📷</span>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="https://wa.me/5517996820993" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               aria-label="Fale conosco pelo WhatsApp"
+                               style="color: white; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: opacity 0.3s;"
+                               onmouseover="this.style.opacity='0.7'" 
+                               onmouseout="this.style.opacity='1'">
+                                <span style="font-size: 1.5rem;">📱</span>
+                                <span>WhatsApp</span>
+                            </a>
+                            <a href="mailto:gabrielacasari@hotmail.com" 
+                               aria-label="Envie um e-mail"
+                               style="color: white; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: opacity 0.3s;"
+                               onmouseover="this.style.opacity='0.7'" 
+                               onmouseout="this.style.opacity='1'">
+                                <span style="font-size: 1.5rem;">✉️</span>
+                                <span>Email</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Divisor -->
+                    <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 32px 0 24px;"></div>
+
+                    <!-- Copyright e Admin -->
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 24px; flex-wrap: wrap; font-size: 0.9rem; opacity: 0.7;">
+                        <p style="margin: 0;">
+                            © ${new Date().getFullYear()} Gabriela Rincão - Todos os direitos reservados
+                        </p>
+                        <span style="opacity: 0.5;">•</span>
+                        <a href="#/login" 
+                           data-link 
+                           style="color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.3s;"
+                           onmouseover="this.style.color='rgba(255,255,255,1)'" 
+                           onmouseout="this.style.color='rgba(255,255,255,0.7)'">
+                            Área Administrativa
                         </a>
                     </div>
-                    <p style="opacity: 0.7; font-size: 0.9rem;">
-                        © ${new Date().getFullYear()} Gabriela - Todos os direitos reservados
-                    </p>
                 </div>
             </footer>
 
