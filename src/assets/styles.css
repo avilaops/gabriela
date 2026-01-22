@@ -585,7 +585,7 @@ a:focus {
 /* ===== STATS ===== */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: var(--spacing-md);
     margin-bottom: var(--spacing-lg);
 }
@@ -596,11 +596,15 @@ a:focus {
     padding: var(--spacing-md);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-md);
+    min-width: 0;
 }
 
 .stat-label {
     font-size: 0.85rem;
     margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .stat-value {
@@ -771,6 +775,13 @@ a:focus {
     
     .stats-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Tablet */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
