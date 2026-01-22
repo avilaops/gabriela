@@ -12,6 +12,9 @@ export class LandingPage {
                     linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 100%),
                     linear-gradient(135deg, rgba(212, 165, 116, 0.2) 0%, rgba(184, 145, 95, 0.2) 50%, rgba(150, 120, 80, 0.3) 100%),
                     url('./background.avif');
+                background-image: image-set(
+                    url('./background.avif') type('image/avif')
+                );
                 background-size: cover;
                 background-position: center;
                 background-blend-mode: overlay;
@@ -29,7 +32,7 @@ export class LandingPage {
                     <div class="flex flex-center gap-md" style="flex-wrap: wrap;">
                         <a href="https://wa.me/5517996820993?text=Olá! Gostaria de agendar um horário" 
                            class="btn btn-lg" 
-                           style="background: white; color: var(--primary); font-weight: 600;"
+                           style="background: white; color: #9D7C52; font-weight: 600;"
                            target="_blank">
                             📱 Agende pelo WhatsApp
                         </a>
@@ -199,22 +202,22 @@ export class LandingPage {
                     <div class="grid grid-4">
                         <div class="text-center">
                             <div class="badge badge-success" style="font-size: 1.5rem; padding: 16px; margin-bottom: 16px;">1</div>
-                            <h4>Agendamento</h4>
+                            <h3 style="font-size: 1.25rem; margin-bottom: 12px;">Agendamento</h3>
                             <p class="text-secondary">Entre em contato pelo WhatsApp e escolha seu horário</p>
                         </div>
                         <div class="text-center">
                             <div class="badge badge-success" style="font-size: 1.5rem; padding: 16px; margin-bottom: 16px;">2</div>
-                            <h4>Análise</h4>
+                            <h3 style="font-size: 1.25rem; margin-bottom: 12px;">Análise</h3>
                             <p class="text-secondary">Estudamos seu rosto e desenhamos o design ideal</p>
                         </div>
                         <div class="text-center">
                             <div class="badge badge-success" style="font-size: 1.5rem; padding: 16px; margin-bottom: 16px;">3</div>
-                            <h4>Execução</h4>
+                            <h3 style="font-size: 1.25rem; margin-bottom: 12px;">Execução</h3>
                             <p class="text-secondary">Realizamos o procedimento com técnica e cuidado</p>
                         </div>
                         <div class="text-center">
                             <div class="badge badge-success" style="font-size: 1.5rem; padding: 16px; margin-bottom: 16px;">4</div>
-                            <h4>Resultado</h4>
+                            <h3 style="font-size: 1.25rem; margin-bottom: 12px;">Resultado</h3>
                             <p class="text-secondary">Você sai linda e confiante para arrasar!</p>
                         </div>
                     </div>
@@ -235,7 +238,7 @@ export class LandingPage {
                     </p>
                     <a href="https://wa.me/5517996820993?text=Olá! Gostaria de agendar um horário" 
                        class="btn btn-lg" 
-                       style="background: white; color: var(--primary); font-weight: 600;"
+                       style="background: white; color: #9D7C52; font-weight: 600;"
                        target="_blank">
                         📱 Agendar Agora pelo WhatsApp
                     </a>
