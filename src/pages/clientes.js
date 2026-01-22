@@ -40,8 +40,9 @@ export class ClientesPage {
         // Event listeners
         const btnNovo = document.getElementById('btn-novo-cliente');
         if (btnNovo) {
-            btnNovo.addEventListener('click', () => {
-                console.log('Clique no botão novo cliente');
+            btnNovo.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 this.showFormModal();
             });
         }
@@ -113,7 +114,9 @@ export class ClientesPage {
         
         // Botões "Editar"
         document.querySelectorAll('[data-action="edit"]').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 const clienteId = btn.getAttribute('data-id');
                 this.showFormModal(clienteId);
             });

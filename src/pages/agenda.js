@@ -59,7 +59,11 @@ export class AgendaPage {
         
         // Event listeners
         const btnNovo = document.getElementById('btn-novo-agendamento');
-        if (btnNovo) btnNovo.addEventListener('click', () => this.showFormModal());
+        if (btnNovo) btnNovo.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.showFormModal();
+        });
         
         const btnMonth = document.getElementById('btn-view-month');
         if (btnMonth) btnMonth.addEventListener('click', () => this.changeView('month'));
@@ -268,7 +272,9 @@ export class AgendaPage {
         
         // Botões Editar
         document.querySelectorAll('[data-action="editar"]').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 const id = btn.getAttribute('data-id');
                 this.showFormModal(id);
             });
