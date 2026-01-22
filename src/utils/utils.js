@@ -63,7 +63,17 @@ export class Utils {
      * Logger condicional (apenas em desenvolvimento)
      */
     static log(...args) {
-        if (process.env.NODE_ENV === 'development' || window.location.hostname === 'localhost') {
+        // Verificar se estamos em desenvolvimento
+        const isDevelopment = (
+            // Verificar se process existe (Node.js) e NODE_ENV é development
+            (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'development') ||
+            // Ou se estamos em localhost
+            (typeof window !== 'undefined' && window.location && window.location.hostname === 'localhost') ||
+            // Ou se estamos em 127.0.0.1
+            (typeof window !== 'undefined' && window.location && window.location.hostname === '127.0.0.1')
+        );
+
+        if (isDevelopment) {
             console.log(...args);
         }
     }
