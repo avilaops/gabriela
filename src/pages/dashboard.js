@@ -1,9 +1,10 @@
 // Dashboard principal do CRM
-import { Header } from '/src/components/header.js';
-import { Chart } from '/src/components/chart.js';
-import { ClienteService } from '/src/services/clientes.js';
-import { AgendaService } from '/src/services/agenda.js';
-import { FinanceiroService } from '/src/services/financeiro.js';
+import { Header } from '../components/header.js';
+import { Chart } from '../components/chart.js';
+import { ClienteService } from '../services/clientes.js';
+import { AgendaService } from '../services/agenda.js';
+import { FinanceiroService } from '../services/financeiro.js';
+import { Utils } from '../utils/utils.js';
 
 export class DashboardPage {
     async render() {
@@ -76,11 +77,11 @@ export class DashboardPage {
                 </div>
                 <div class="stat-card" style="background: linear-gradient(135deg, #5EAC7B 0%, #4A8B63 100%);">
                     <div class="stat-label">Faturamento do Mês</div>
-                    <div class="stat-value">${this.formatCurrency(faturamentoMes)}</div>
+                    <div class="stat-value">${Utils.formatCurrency(faturamentoMes)}</div>
                 </div>
                 <div class="stat-card" style="background: linear-gradient(135deg, #3498DB 0%, #2980B9 100%);">
                     <div class="stat-label">Faturamento Hoje</div>
-                    <div class="stat-value">${this.formatCurrency(faturamentoHoje)}</div>
+                    <div class="stat-value">${Utils.formatCurrency(faturamentoHoje)}</div>
                 </div>
                 <div class="stat-card" style="background: linear-gradient(135deg, #F5A623 0%, #E8930E 100%);">
                     <div class="stat-label">Agendamentos Hoje</div>
@@ -118,7 +119,7 @@ export class DashboardPage {
                     </div>
                     <div class="text-right">
                         <div class="text-primary"><strong>${dateStr}</strong></div>
-                        <div class="text-muted" style="font-size: 0.85rem;">${this.formatCurrency(agendamento.valor)}</div>
+                        <div class="text-muted" style="font-size: 0.85rem;">${Utils.formatCurrency(agendamento.valor)}</div>
                     </div>
                 </div>
             `;
@@ -243,7 +244,7 @@ export class DashboardPage {
     }
 
     formatCurrency(value) {
-        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+        return Utils.formatCurrency(value);
     }
 
     formatPhone(phone) {

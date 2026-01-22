@@ -1,7 +1,9 @@
 // Página de gestão de clientes - CORRIGIDA
-import { Header } from '/src/components/header.js';
-import { Modal } from '/src/components/modal.js';
-import { ClienteService } from '/src/services/clientes.js';
+import { Header } from '../components/header.js';
+import { Modal } from '../components/modal.js';
+import { ClienteService } from '../services/clientes.js';
+import { ImportacaoService } from '../services/importacao.js';
+import { Utils } from '../utils/utils.js';
 
 export class ClientesPage {
     constructor() {
@@ -13,11 +15,19 @@ export class ClientesPage {
         return `
             ${Header.render()}
             <div class="container">
-                <div class="flex flex-between mb-6">
+                <div class="flex flex-between mb-6" style="flex-wrap: wrap; gap: 16px;">
                     <h1>Gestão de Clientes</h1>
-                    <button class="btn btn-primary" id="btn-novo-cliente">
-                        + Novo Cliente
-                    </button>
+                    <div class="flex gap-sm" style="flex-wrap: wrap;">
+                        <button class="btn btn-outline" id="btn-importar">
+                            📥 Importar
+                        </button>
+                        <button class="btn btn-outline" id="btn-exportar">
+                            📤 Exportar
+                        </button>
+                        <button class="btn btn-primary" id="btn-novo-cliente">
+                            + Novo Cliente
+                        </button>
+                    </div>
                 </div>
 
                 <div class="card mb-6">
@@ -44,6 +54,24 @@ export class ClientesPage {
                 e.preventDefault();
                 e.stopPropagation();
                 this.showFormModal();
+            });
+        }
+        
+        const btnImportar = document.getElementById('btn-importar');
+        if (btnImportar) {
+            btnImportar.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.showImportModal();
+            });
+        }
+        
+        const btnExportar = document.getElementById('btn-exportar');
+        if (btnExportar) {
+            btnExportar.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.exportarContatos();
             });
         }
         
@@ -137,9 +165,9 @@ export class ClientesPage {
 
         return `
             <tr>
-                <td data-label="Nome"><strong>${cliente.nome}</strong></td>
-                <td data-label="Telefone">${this.formatPhone(cliente.telefone)}</td>
-                <td data-label="Instagram">${cliente.instagram || '-'}</td>
+                <td data-label="Nome"><strong>${Utils.sanitizeHTML(cliente.nome)}</strong></td>
+                <td data-label="Telefone">${Utils.formatPhone(cliente.telefone)}</td>
+                <td data-label="Instagram">${Utils.sanitizeHTML(cliente.instagram || '-')}</td>
                 <td data-label="Aniversário">${dataNasc}</td>
                 <td data-label="Procedimentos">${totalProcedimentos}</td>
                 <td data-label="Ações" style="display: flex; gap: 8px; flex-wrap: wrap;">
@@ -283,7 +311,7 @@ export class ClientesPage {
                 <div class="card mb-6">
                     <h4>Estatísticas</h4>
                     <p><strong>Total de Procedimentos:</strong> ${historico.length}</p>
-                    <p><strong>Valor Total Gasto:</strong> ${this.formatCurrency(valorTotal)}</p>
+                    <p><strong>Valor Total Gasto:</strong> ${Utils.formatCurrency(valorTotal)}</p>
                 </div>
 
                 <h4 class="mb-4">Histórico de Procedimentos</h4>
@@ -302,7 +330,7 @@ export class ClientesPage {
                                     <tr>
                                         <td data-label="Data">${new Date(h.data).toLocaleDateString('pt-BR')}</td>
                                         <td data-label="Serviço">${h.servico}</td>
-                                        <td data-label="Valor">${this.formatCurrency(h.valor)}</td>
+                                        <td data-label="Valor">${Utils.formatCurrency(h.valor)}</td>
                                     </tr>
                                 `).join('')}
                             </tbody>
@@ -343,19 +371,149 @@ export class ClientesPage {
         });
     }
 
-    formatPhone(phone) {
-        if (!phone) return '-';
-        const cleaned = phone.replace(/\D/g, '');
-        if (cleaned.length === 11) {
-            return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(7)}`;
+    showImportModal() {
+        const modalId = 'modal-importar-' + Date.now();
+        const modal = new Modal({
+            id: modalId,
+            title: '📥 Importar Contatos',
+            size: 'md',
+            content: `
+                <div style="margin-bottom: 24px;">
+                    <label class="form-label">Selecione o arquivo de contatos</label>
+                    <input type="file" id="file-import" class="form-input" accept=".vcf,.csv" />
+                    <p style="margin-top: 8px; font-size: 0.85rem; color: var(--text-secondary);">
+                        Formatos aceitos: VCF (vCard) ou CSV
+                    </p>
+                </div>
+                <div id="import-result" style="display: none; margin-top: 16px; padding: 16px; border-radius: 8px;"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('${modalId}').remove()">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn-confirmar-importar">
+                        Importar
+                    </button>
+                </div>
+            `
+        });
+
+        modal.show();
+
+        const btnConfirmar = document.getElementById('btn-confirmar-importar');
+        if (btnConfirmar) {
+            btnConfirmar.addEventListener('click', async () => {
+                const fileInput = document.getElementById('file-import');
+                const file = fileInput?.files[0];
+                
+                if (!file) {
+                    Modal.alert('Por favor, selecione um arquivo.');
+                    return;
+                }
+
+                btnConfirmar.disabled = true;
+                btnConfirmar.textContent = 'Importando...';
+
+                try {
+                    const resultado = await ImportacaoService.importarArquivo(file);
+                    
+                    const resultDiv = document.getElementById('import-result');
+                    if (resultDiv) {
+                        resultDiv.style.display = 'block';
+                        resultDiv.style.backgroundColor = resultado.erros.length > 0 ? '#fff3cd' : '#d4edda';
+                        resultDiv.style.color = resultado.erros.length > 0 ? '#856404' : '#155724';
+                        resultDiv.innerHTML = `
+                            <h4 style="margin: 0 0 8px 0;">Importação Concluída</h4>
+                            <p style="margin: 4px 0;">✅ ${resultado.sucesso} contato(s) importado(s)</p>
+                            ${resultado.erros.length > 0 ? `<p style="margin: 4px 0;">❌ ${resultado.erros.length} erro(s)</p>` : ''}
+                            ${resultado.erros.length > 0 ? `
+                                <details style="margin-top: 8px;">
+                                    <summary style="cursor: pointer;">Ver erros</summary>
+                                    <ul style="margin: 8px 0; padding-left: 20px;">
+                                        ${resultado.erros.map(e => `<li>${e}</li>`).join('')}
+                                    </ul>
+                                </details>
+                            ` : ''}
+                        `;
+                    }
+
+                    if (resultado.sucesso > 0) {
+                        this.loadClientes();
+                    }
+
+                    btnConfirmar.textContent = 'Concluído';
+                    setTimeout(() => {
+                        if (resultado.erros.length === 0) {
+                            document.getElementById(modalId)?.remove();
+                        }
+                    }, 2000);
+                } catch (error) {
+                    Modal.alert('Erro ao importar arquivo: ' + error.message);
+                    btnConfirmar.disabled = false;
+                    btnConfirmar.textContent = 'Importar';
+                }
+            });
         }
-        return phone;
     }
 
+    exportarContatos() {
+        const clientes = ClienteService.getAll();
+        
+        if (clientes.length === 0) {
+            Modal.alert('Não há contatos para exportar.');
+            return;
+        }
+
+        // Modal para escolher formato
+        const modalId = 'modal-exportar-' + Date.now();
+        const modal = new Modal({
+            id: modalId,
+            title: '📤 Exportar Contatos',
+            size: 'sm',
+            content: `
+                <div style="margin-bottom: 24px;">
+                    <p style="margin-bottom: 16px;">Escolha o formato para exportar ${clientes.length} contato(s):</p>
+                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 8px;" id="btn-export-vcf">
+                        📇 Exportar VCF (vCard)
+                    </button>
+                    <button class="btn btn-secondary" style="width: 100%;" id="btn-export-csv">
+                        📊 Exportar CSV
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('${modalId}').remove()">
+                        Cancelar
+                    </button>
+                </div>
+            `
+        });
+
+        modal.show();
+
+        document.getElementById('btn-export-vcf')?.addEventListener('click', () => {
+            ImportacaoService.exportarVCF(clientes);
+            document.getElementById(modalId)?.remove();
+            Modal.alert('Arquivo VCF exportado com sucesso!', 'Sucesso');
+        });
+
+        document.getElementById('btn-export-csv')?.addEventListener('click', () => {
+            ImportacaoService.exportarCSV(clientes);
+            document.getElementById(modalId)?.remove();
+            Modal.alert('Arquivo CSV exportado com sucesso!', 'Sucesso');
+        });
+    }
+
+
     formatCurrency(value) {
-        return new Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL'
-        }).format(value || 0);
+        return Utils.formatCurrency(value);
+    }
+
+    destroy() {
+        // Limpar referências globais
+        if (window.clientesPage === this) {
+            window.clientesPage = null;
+        }
+
+        // Remover event listeners (serão removidos quando o DOM for substituído)
+        Utils.log('ClientesPage destroyed');
     }
 }

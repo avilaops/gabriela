@@ -1,4 +1,6 @@
 // Serviço de Autenticação
+import { Utils } from '../utils/utils.js';
+
 export class AuthService {
     constructor() {
         this.storageKey = 'gabriela_auth';
@@ -16,11 +18,11 @@ export class AuthService {
 
     // Fazer login
     async login(email, password) {
-        console.log('Tentando login com:', email);
+        Utils.log('Tentando login com:', email);
         
         // Login temporário para desenvolvimento
         if (email === 'dev@localhost') {
-            console.log('Login dev');
+            Utils.log('Login dev');
             return this.devLogin();
         }
         

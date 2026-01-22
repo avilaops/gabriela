@@ -1,5 +1,5 @@
 // Landing Page Profissional
-import { Header } from '/src/components/header.js';
+import { Header } from '../components/header.js';
 
 export class LandingPage {
     async render() {

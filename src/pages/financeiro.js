@@ -1,7 +1,8 @@
 // Página de gestão financeira
-import { Header } from '/src/components/header.js';
-import { Chart } from '/src/components/chart.js';
-import { FinanceiroService } from '/src/services/financeiro.js';
+import { Header } from '../components/header.js';
+import { Chart } from '../components/chart.js';
+import { FinanceiroService } from '../services/financeiro.js';
+import { Utils } from '../utils/utils.js';
 
 export class FinanceiroPage {
     constructor() {
@@ -111,11 +112,11 @@ export class FinanceiroPage {
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-label">Faturamento Total</div>
-                    <div class="stat-value">${this.formatCurrency(faturamento)}</div>
+                    <div class="stat-value">${Utils.formatCurrency(faturamento)}</div>
                 </div>
                 <div class="stat-card" style="background: linear-gradient(135deg, #5EAC7B 0%, #4A8B63 100%);">
                     <div class="stat-label">Ticket Médio</div>
-                    <div class="stat-value">${this.formatCurrency(ticketMedio)}</div>
+                    <div class="stat-value">${Utils.formatCurrency(ticketMedio)}</div>
                 </div>
                 <div class="stat-card" style="background: linear-gradient(135deg, #3498DB 0%, #2980B9 100%);">
                     <div class="stat-label">Total de Atendimentos</div>
@@ -200,7 +201,7 @@ export class FinanceiroPage {
                     <div class="card">
                         <h4 style="text-transform: capitalize;">${forma.nome}</h4>
                         <p class="text-primary" style="font-size: 1.5rem; font-weight: 700;">
-                            ${this.formatCurrency(forma.valor)}
+                            ${Utils.formatCurrency(forma.valor)}
                         </p>
                         <p class="text-muted">
                             ${forma.quantidade} pagamentos (${((forma.valor / total) * 100).toFixed(1)}%)
@@ -248,7 +249,7 @@ export class FinanceiroPage {
                                     minute: '2-digit'
                                 })}</td>
                                 <td>${p.servico}</td>
-                                <td><strong>${this.formatCurrency(p.valor)}</strong></td>
+                                <td><strong>${Utils.formatCurrency(p.valor)}</strong></td>
                                 <td style="text-transform: capitalize;">${p.formaPagamento}</td>
                             </tr>
                         `).join('')}
@@ -259,7 +260,7 @@ export class FinanceiroPage {
     }
 
     formatCurrency(value) {
-        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+        return Utils.formatCurrency(value);
     }
 
     destroy() {

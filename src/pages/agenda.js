@@ -1,8 +1,10 @@
 // Página de agenda/calendário
-import { Header } from '/src/components/header.js';
-import { Modal } from '/src/components/modal.js';
-import { AgendaService } from '/src/services/agenda.js';
-import { ClienteService } from '/src/services/clientes.js';
+import { Header } from '../components/header.js';
+import { Modal } from '../components/modal.js';
+import { AgendaService } from '../services/agenda.js';
+import { ClienteService } from '../services/clientes.js';
+import { LembretesService } from '../services/lembretes.js';
+import { Utils } from '../utils/utils.js';
 
 export class AgendaPage {
     constructor() {
@@ -15,11 +17,16 @@ export class AgendaPage {
         return `
             ${Header.render()}
             <div class="container">
-                <div class="flex flex-between mb-md">
+                <div class="flex flex-between mb-md" style="flex-wrap: wrap; gap: 16px;">
                     <h1>Agenda</h1>
-                    <button class="btn btn-primary" id="btn-novo-agendamento">
-                        + Novo Agendamento
-                    </button>
+                    <div class="flex gap-sm" style="flex-wrap: wrap;">
+                        <button class="btn btn-secondary" id="btn-lembretes">
+                            🔔 Enviar Lembretes
+                        </button>
+                        <button class="btn btn-primary" id="btn-novo-agendamento">
+                            + Novo Agendamento
+                        </button>
+                    </div>
                 </div>
 
                 <div class="card mb-md">
@@ -64,6 +71,12 @@ export class AgendaPage {
             e.stopPropagation();
             this.showFormModal();
         });
+
+        const btnLembretes = document.getElementById('btn-lembretes');
+        if (btnLembretes) btnLembretes.addEventListener('click', () => this.showLembretesModal());
+        
+        // Disponibilizar globalmente para onclick dos botões
+        window.agendaPage = this;
         
         const btnMonth = document.getElementById('btn-view-month');
         if (btnMonth) btnMonth.addEventListener('click', () => this.changeView('month'));
@@ -315,7 +328,7 @@ export class AgendaPage {
                         </div>
                         <p><strong>Cliente:</strong> ${agendamento.cliente?.nome || 'N/A'}</p>
                         <p><strong>Serviço:</strong> ${agendamento.servico}</p>
-                        <p><strong>Valor:</strong> ${this.formatCurrency(agendamento.valor)}</p>
+                        <p><strong>Valor:</strong> ${Utils.formatCurrency(agendamento.valor)}</p>
                         ${agendamento.observacoes ? `<p class="text-muted">${agendamento.observacoes}</p>` : ''}
                     </div>
                     <div class="flex flex-column gap-sm">
@@ -452,10 +465,90 @@ export class AgendaPage {
     }
 
     formatCurrency(value) {
-        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+        return Utils.formatCurrency(value);
+    }
+
+    showLembretesModal() {
+        const agendamentos = LembretesService.getAgendamentosParaLembrete();
+        
+        if (agendamentos.length === 0) {
+            Modal.alert('Não há agendamentos para amanhã que precisam de lembrete.');
+            return;
+        }
+
+        const modalId = 'modal-lembretes-' + Date.now();
+        const modal = new Modal({
+            id: modalId,
+            title: `🔔 Enviar Lembretes (${agendamentos.length} agendamento${agendamentos.length > 1 ? 's' : ''})`,
+            size: 'lg',
+            content: `
+                <div style="margin-bottom: 24px;">
+                    <p style="margin-bottom: 16px;">Clientes com agendamento para amanhã:</p>
+                    <div id="lembretes-list"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('${modalId}').remove()">
+                        Fechar
+                    </button>
+                </div>
+            `
+        });
+
+        modal.show();
+
+        // Renderizar lista de lembretes
+        const list = document.getElementById('lembretes-list');
+        if (list) {
+            list.innerHTML = agendamentos.map(ag => `
+                <div class="card mb-sm" style="padding: 16px;">
+                    <div class="flex flex-between" style="align-items: start;">
+                        <div style="flex: 1;">
+                            <strong>${ag.cliente.nome}</strong>
+                            <p style="margin: 4px 0; color: var(--text-secondary); font-size: 0.9rem;">
+                                ${new Date(ag.dataHora).toLocaleString('pt-BR', { 
+                                    weekday: 'long',
+                                    day: '2-digit',
+                                    month: 'long',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                })}
+                            </p>
+                            <p style="margin: 4px 0; color: var(--text-secondary); font-size: 0.9rem;">
+                                ${ag.servico}
+                            </p>
+                            ${ag.lembreteEnviado ? '<span class="badge badge-success">✅ Lembrete já enviado</span>' : ''}
+                        </div>
+                        <select class="form-select" id="template-${ag.id}" style="width: auto; min-width: 150px; margin-right: 8px;">
+                            ${LembretesService.getTemplates().map(t => `
+                                <option value="${t.id}">${t.nome}</option>
+                            `).join('')}
+                        </select>
+                        <button class="btn btn-sm btn-primary" onclick="window.agendaPage.enviarLembrete('${ag.id}', '${ag.clienteId}')">
+                            📱 Enviar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+
+    enviarLembrete(agendamentoId, clienteId) {
+        const agendamento = AgendaService.getById(agendamentoId);
+        const cliente = ClienteService.getById(clienteId);
+        const templateSelect = document.getElementById(`template-${agendamentoId}`);
+        const templateId = templateSelect?.value || 'padrao';
+        
+        const link = LembretesService.enviarLembrete(agendamento, cliente, templateId);
+        window.open(link, '_blank');
+        
+        // Atualizar visualização
+        this.showLembretesModal();
     }
 
     destroy() {
-        window.agendaPage = null;
+        if (window.agendaPage === this) {
+            window.agendaPage = null;
+        }
+        Utils.log('AgendaPage destroyed');
     }
 }

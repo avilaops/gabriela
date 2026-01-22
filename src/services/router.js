@@ -1,12 +1,12 @@
 // Sistema de roteamento SPA
-import { LandingPage } from '/src/pages/landing.js';
-import { LoginPage } from '/src/pages/login.js';
-import { DashboardPage } from '/src/pages/dashboard.js';
-import { ClientesPage } from '/src/pages/clientes.js';
-import { AgendaPage } from '/src/pages/agenda.js';
-import { FinanceiroPage } from '/src/pages/financeiro.js';
-import { Header } from '/src/components/header.js';
-import { authService } from '/src/services/auth.js';
+import { LandingPage } from '../pages/landing.js';
+import { LoginPage } from '../pages/login.js';
+import { DashboardPage } from '../pages/dashboard.js';
+import { ClientesPage } from '../pages/clientes.js';
+import { AgendaPage } from '../pages/agenda.js';
+import { FinanceiroPage } from '../pages/financeiro.js';
+import { Header } from '../components/header.js';
+import { authService } from '../services/auth.js';
 
 export class Router {
     constructor() {

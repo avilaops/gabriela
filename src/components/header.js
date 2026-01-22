@@ -1,5 +1,5 @@
 // Componente de Header
-import { authService } from '/src/services/auth.js';
+import { authService } from '../services/auth.js';
 
 export class Header {
     static render(isLanding = false) {
