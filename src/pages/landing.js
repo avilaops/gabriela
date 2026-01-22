@@ -304,6 +304,15 @@ export class LandingPage {
                             © ${new Date().getFullYear()} Gabriela Rincão - Todos os direitos reservados
                         </p>
                         <span style="opacity: 0.5;">•</span>
+                        <a href="https://avila.inc" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           style="color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.3s;"
+                           onmouseover="this.style.color='rgba(255,255,255,1)'" 
+                           onmouseout="this.style.color='rgba(255,255,255,0.7)'">
+                            Desenvolvido por Avila.inc
+                        </a>
+                        <span style="opacity: 0.5;">•</span>
                         <a href="#/login" 
                            data-link 
                            style="color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.3s;"
