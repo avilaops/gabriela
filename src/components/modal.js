@@ -31,6 +31,7 @@ export class Modal {
         document.body.insertAdjacentHTML('beforeend', this.render());
         
         const modalElement = document.getElementById(this.id);
+        console.log('Modal element created:', modalElement);
         
         // Aguardar próximo frame antes de adicionar listeners
         // Isso evita que o click que abriu o modal feche ele imediatamente

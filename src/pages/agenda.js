@@ -326,10 +326,10 @@ export class AgendaPage {
                             <strong style="font-size: 1.2rem;">${time}</strong>
                             <span class="badge badge-${statusColors[agendamento.status]}">${statusLabels[agendamento.status]}</span>
                         </div>
-                        <p><strong>Cliente:</strong> ${agendamento.cliente?.nome || 'N/A'}</p>
-                        <p><strong>Serviço:</strong> ${agendamento.servico}</p>
+                        <p><strong>Cliente:</strong> ${Utils.sanitizeHTML(agendamento.cliente?.nome || 'N/A')}</p>
+                        <p><strong>Serviço:</strong> ${Utils.sanitizeHTML(agendamento.servico)}</p>
                         <p><strong>Valor:</strong> ${Utils.formatCurrency(agendamento.valor)}</p>
-                        ${agendamento.observacoes ? `<p class="text-muted">${agendamento.observacoes}</p>` : ''}
+                        ${agendamento.observacoes ? `<p class="text-muted">${Utils.sanitizeHTML(agendamento.observacoes)}</p>` : ''}
                     </div>
                     <div class="flex flex-column gap-sm">
                         ${agendamento.status === 'agendado' ? `
@@ -365,19 +365,20 @@ export class AgendaPage {
             ? new Date(agendamento.dataHora).toISOString().slice(0, 16)
             : '';
 
+        const formId = `agendamento-form-${Date.now()}`;
         const modalId = 'modal-agendamento-' + Date.now();
         const modal = new Modal({
             id: modalId,
             title: isEdit ? 'Editar Agendamento' : 'Novo Agendamento',
             content: `
-                <form id="agendamento-form">
+                <form id="${formId}">
                     <div class="form-group">
                         <label class="form-label">Cliente *</label>
                         <select class="form-select" name="clienteId" required>
                             <option value="">Selecione um cliente</option>
                             ${clientes.map(c => `
                                 <option value="${c.id}" ${agendamento?.clienteId === c.id ? 'selected' : ''}>
-                                    ${c.nome}
+                                    ${Utils.sanitizeHTML(c.nome)}
                                 </option>
                             `).join('')}
                         </select>
@@ -408,7 +409,7 @@ export class AgendaPage {
 
                     <div class="form-group">
                         <label class="form-label">Observações</label>
-                        <textarea class="form-textarea" name="observacoes">${agendamento?.observacoes || ''}</textarea>
+                        <textarea class="form-textarea" name="observacoes">${Utils.sanitizeHTML(agendamento?.observacoes || '')}</textarea>
                     </div>
 
                     <div class="modal-footer">
@@ -425,22 +426,38 @@ export class AgendaPage {
 
         modal.show();
 
-        document.getElementById('agendamento-form').addEventListener('submit', (e) => {
+        document.getElementById(formId).addEventListener('submit', (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
             const data = Object.fromEntries(formData);
             data.valor = parseFloat(data.valor);
 
-            if (isEdit) {
-                AgendaService.update(agendamentoId, data);
-                Modal.alert('Agendamento atualizado com sucesso!');
-            } else {
-                AgendaService.create(data);
-                Modal.alert('Agendamento criado com sucesso!');
+            // Validação adicional
+            if (!data.clienteId || !data.dataHora || !data.servico || !data.valor) {
+                Modal.alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
             }
 
-            modal.close();
-            this.renderView();
+            if (data.valor <= 0) {
+                Modal.alert('O valor deve ser maior que zero.');
+                return;
+            }
+
+            try {
+                if (isEdit) {
+                    AgendaService.update(agendamentoId, data);
+                    Modal.alert('Agendamento atualizado com sucesso!');
+                } else {
+                    AgendaService.create(data);
+                    Modal.alert('Agendamento criado com sucesso!');
+                }
+
+                modal.close();
+                this.renderView();
+            } catch (error) {
+                Utils.log('Erro ao salvar agendamento:', error);
+                Modal.alert('Erro ao salvar agendamento. Tente novamente.');
+            }
         });
     }
 

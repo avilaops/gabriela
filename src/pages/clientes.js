@@ -54,12 +54,10 @@ export class ClientesPage {
                 e.preventDefault();
                 e.stopPropagation();
                 Utils.log('Botão Novo Cliente clicado');
-                alert('Botão clicado!'); // Teste simples
                 this.showFormModal();
             });
         } else {
             Utils.log('ERRO: Botão Novo Cliente não encontrado');
-            alert('ERRO: Botão não encontrado!'); // Teste de erro
         }
         
         const btnImportar = document.getElementById('btn-importar');
