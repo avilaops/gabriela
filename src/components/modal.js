@@ -32,18 +32,22 @@ export class Modal {
         
         const modalElement = document.getElementById(this.id);
         
-        // Click no overlay para fechar
-        modalElement.addEventListener('click', (e) => {
-            if (e.target === modalElement) {
-                this.close();
+        // Aguardar próximo frame antes de adicionar listeners
+        // Isso evita que o click que abriu o modal feche ele imediatamente
+        setTimeout(() => {
+            // Click no overlay para fechar
+            modalElement.addEventListener('click', (e) => {
+                if (e.target === modalElement) {
+                    this.close();
+                }
+            });
+            
+            // Botão fechar
+            const closeBtn = modalElement.querySelector('[data-modal-close]');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => this.close());
             }
-        });
-        
-        // Botão fechar
-        const closeBtn = modalElement.querySelector('[data-modal-close]');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => this.close());
-        }
+        }, 100);
         
         // ESC para fechar
         const escListener = (e) => {
