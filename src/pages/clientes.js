@@ -53,8 +53,13 @@ export class ClientesPage {
             btnNovo.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                Utils.log('Botão Novo Cliente clicado');
+                alert('Botão clicado!'); // Teste simples
                 this.showFormModal();
             });
+        } else {
+            Utils.log('ERRO: Botão Novo Cliente não encontrado');
+            alert('ERRO: Botão não encontrado!'); // Teste de erro
         }
         
         const btnImportar = document.getElementById('btn-importar');
@@ -191,18 +196,19 @@ export class ClientesPage {
     }
 
     showFormModal(clienteId = null) {
-        console.log('showFormModal called with clienteId:', clienteId);
+        Utils.log('showFormModal called with clienteId:', clienteId);
         const cliente = clienteId ? ClienteService.getById(clienteId) : null;
         const isEdit = !!cliente;
-        console.log('Cliente:', cliente, 'isEdit:', isEdit);
+        Utils.log('Cliente:', cliente, 'isEdit:', isEdit);
 
         const modalId = 'modal-cliente-' + Date.now();
-        console.log('Modal ID:', modalId);
+        const formId = 'cliente-form-' + Date.now();
+        Utils.log('Modal ID:', modalId, 'Form ID:', formId);
         const modal = new Modal({
             id: modalId,
             title: isEdit ? 'Editar Cliente' : 'Novo Cliente',
             content: `
-                <form id="cliente-form">
+                <form id="${formId}">
                     <div class="form-group">
                         <label class="form-label">Nome *</label>
                         <input type="text" class="form-input" name="nome" value="${cliente?.nome || ''}" required>
@@ -240,45 +246,57 @@ export class ClientesPage {
             `
         });
 
-        console.log('Modal created, calling show');
+        Utils.log('Modal created, calling show');
         modal.show();
-        console.log('Modal shown');
+        Utils.log('Modal shown');
 
         // Aguardar o DOM estar pronto
         setTimeout(() => {
-            console.log('setTimeout triggered');
-            const form = document.getElementById('cliente-form');
+            Utils.log('setTimeout triggered');
+            const form = document.getElementById(formId);
             const cancelBtn = document.querySelector('[data-cancel]');
-            console.log('Form found:', !!form, 'Cancel btn found:', !!cancelBtn);
+            Utils.log('Form found:', !!form, 'Cancel btn found:', !!cancelBtn);
             
             if (cancelBtn) {
                 cancelBtn.addEventListener('click', () => {
-                    console.log('Cancel clicked');
+                    Utils.log('Cancel clicked');
                     modal.close();
                 });
             }
             
             if (form) {
                 form.addEventListener('submit', (e) => {
-                    console.log('Form submitted');
+                    Utils.log('Form submitted');
                     e.preventDefault();
                     const formData = new FormData(e.target);
                     const data = Object.fromEntries(formData);
-                    console.log('Form data:', data);
+                    Utils.log('Form data:', data);
+
+                    // Validação básica
+                    if (!data.nome || !data.nome.trim()) {
+                        Modal.alert('Por favor, informe o nome do cliente.', 'Erro');
+                        return;
+                    }
+
+                    if (!data.telefone || !data.telefone.trim()) {
+                        Modal.alert('Por favor, informe o telefone do cliente.', 'Erro');
+                        return;
+                    }
 
                     try {
                         if (isEdit) {
                             ClienteService.update(clienteId, data);
                             Modal.alert('Cliente atualizado com sucesso!', 'Sucesso');
                         } else {
-                            ClienteService.create(data);
+                            const novoCliente = ClienteService.create(data);
+                            Utils.log('Cliente criado:', novoCliente);
                             Modal.alert('Cliente cadastrado com sucesso!', 'Sucesso');
                         }
 
                         modal.close();
                         this.loadClientes();
                     } catch (error) {
-                        console.error('Error saving cliente:', error);
+                        Utils.log('Error saving cliente:', error);
                         Modal.alert('Erro ao salvar cliente: ' + error.message, 'Erro');
                     }
                 });

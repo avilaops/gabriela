@@ -26,6 +26,13 @@ export class Router {
     }
 
     init() {
+        // Login automático em desenvolvimento
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            if (!authService.isAuthenticated()) {
+                authService.login('admin@gabriela.com.br', 'Gabriela@102030');
+            }
+        }
+
         // Listener para mudanças de hash
         window.addEventListener('hashchange', () => this.handleRoute());
         

@@ -5,8 +5,10 @@ export class ClienteService {
     static STORAGE_KEY = StorageService.KEYS.CLIENTES;
 
     static getAll() {
-        return StorageService.getAll(this.STORAGE_KEY)
+        const result = StorageService.getAll(this.STORAGE_KEY)
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        console.log('Clientes encontrados:', result.length);
+        return result;
     }
 
     static getById(id) {
@@ -22,7 +24,9 @@ export class ClienteService {
             observacoes: clienteData.observacoes || '',
             historico: []
         };
-        return StorageService.add(this.STORAGE_KEY, cliente);
+        const result = StorageService.add(this.STORAGE_KEY, cliente);
+        console.log('Cliente criado:', result);
+        return result;
     }
 
     static update(id, clienteData) {
