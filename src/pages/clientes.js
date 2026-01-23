@@ -271,6 +271,11 @@ export class ClientesPage {
                 return;
             }
 
+            if (form.dataset.initialized === 'true') {
+                return;
+            }
+            form.dataset.initialized = 'true';
+
             const cancelBtn = form.querySelector('[data-cancel]');
             if (cancelBtn) {
                 cancelBtn.addEventListener('click', (event) => {
@@ -321,7 +326,7 @@ export class ClientesPage {
                     Utils.log('Erro ao salvar cliente', error);
                     Modal.alert('Erro ao salvar cliente: ' + error.message, 'Erro');
                 }
-            }, { once: true });
+            });
         };
 
         requestAnimationFrame(initializeForm);
